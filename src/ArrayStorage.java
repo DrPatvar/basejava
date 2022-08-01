@@ -6,13 +6,11 @@ public class ArrayStorage {
     int size = 0;
 
     void clear() {
-        System.out.println("Отчистка массива обнуление ");
-        
-        /*for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null) {
-                storage[i] = null;
-            }
-        }*/
+        System.out.println("Обнуление массива: ");
+        for (int i = 0; i < size-1; i++) {
+            storage[i] = null;
+        }
+        size=0;
     }
 
     void save(Resume r) {
