@@ -19,15 +19,23 @@ public class ArrayStorage {
     }
 
     Resume get(String uuid) {
+        System.out.println("Поиск и выдача элемента: " + uuid + " в маccиве Resume.");
         for (int i = 0; i <size ; i++) {
-            storage[i].equals(uuid);
-            return storage[i];
+            if (storage[i].uuid==(uuid))
+                return storage[i];
         }return null;
     }
 
     void delete(String uuid) {
-        System.out.println("Удаление элемента из массива");
-        Resume[] cloneRes = new Resume[storage.length];
+       /* System.out.println("Удаление элемента из массива");
+        for (int i = 0; i <=size ; i++) {
+            if (storage[i].uuid.equals(uuid)){
+            for (int j = i; j <size ; j++) {
+                storage[j]=storage[i+1];
+            }
+            }
+        }size--;*/
+        /*Resume[] cloneRes = new Resume[storage.length];
         for (int i = 0; i < storage.length; i++) {
             cloneRes[i] = storage[i];
         }
@@ -42,7 +50,7 @@ public class ArrayStorage {
                 }
             }
         } catch (NullPointerException e) {
-        }
+        }*/
     }
 
     /**
