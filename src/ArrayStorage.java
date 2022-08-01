@@ -2,7 +2,7 @@
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10];
+    Resume[] storage = new Resume[10000];
     int size = 0;
 
     void clear() {
@@ -20,37 +20,23 @@ public class ArrayStorage {
 
     Resume get(String uuid) {
         System.out.println("Поиск и выдача элемента: " + uuid + " в маccиве Resume.");
-        for (int i = 0; i <size ; i++) {
-            if (storage[i].uuid==(uuid))
+        for (int i = 0; i < size; i++) {
+            if (storage[i].uuid == (uuid))
                 return storage[i];
-        }return null;
+        }
+        return null;
     }
 
     void delete(String uuid) {
-       /* System.out.println("Удаление элемента из массива");
-        for (int i = 0; i <=size ; i++) {
-            if (storage[i].uuid.equals(uuid)){
-            for (int j = i; j <size ; j++) {
-                storage[j]=storage[i+1];
-            }
-            }
-        }size--;*/
-        /*Resume[] cloneRes = new Resume[storage.length];
-        for (int i = 0; i < storage.length; i++) {
-            cloneRes[i] = storage[i];
-        }
-        try {
-            for (int i = 0; i < storage.length; i++) {
-                if (storage[i].uuid.equals(uuid)) {
-                    for (int j = i + 1; j < cloneRes.length; j++) {
-                        storage[i] = cloneRes[j];
-                    }
-                    size--;
-                    break;
+        System.out.println("Удаление элемента из массива");
+        for (int i = 0; i < size; i++) {
+            if (storage[i].uuid == (uuid)) {
+                for (int j = i; j < size-1; j++) {
+                    storage[j] = storage[j + 1];
                 }
             }
-        } catch (NullPointerException e) {
-        }*/
+        }
+        size--;
     }
 
     /**
