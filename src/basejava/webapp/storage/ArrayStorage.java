@@ -48,7 +48,9 @@ public class ArrayStorage {
         System.out.println("Обновление резюме..........");
         if (checkResume(resume)) {
             for (int i = 0; i < size; i++) {
-                storage[i].setUuid(resume.getUuid());
+                if(storage[i]==resume){
+                    storage[i].setUuid(resume.getUuid());
+                }
             }
             System.out.println("Резюме " + resume + " обновлено в данном массиве.");
         }
