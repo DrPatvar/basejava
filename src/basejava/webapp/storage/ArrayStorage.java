@@ -2,6 +2,8 @@ package basejava.webapp.storage;
 
 import basejava.webapp.model.Resume;
 
+import java.util.Arrays;
+
 /**
  * Array based storage for Resumes
  */
@@ -38,9 +40,7 @@ public class ArrayStorage {
 
     public void clear() {
         System.out.println("Обнуление массива: ");
-        for (int i = 0; i < size - 1; i++) {
-            storage[i] = null;
-        }
+        Arrays.fill(storage,null);
         size = 0;
     }
 
