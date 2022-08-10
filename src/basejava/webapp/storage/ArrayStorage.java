@@ -92,17 +92,13 @@ public class ArrayStorage {
             System.out.println("указанный элемент: " + uuid + " удален из массива");
         }
     }
-
     /**
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
         System.out.println("Все элементы массива: ");
         Resume[] resumes = new Resume[size];
-        for (int i = 0; i < size; i++) {
-            resumes[i] = storage[i];
-        }
-        return resumes;
+        return resumes = Arrays.copyOfRange(storage,0,size);
     }
 
     public int size() {
