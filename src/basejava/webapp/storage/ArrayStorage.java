@@ -42,9 +42,10 @@ public class ArrayStorage {
 
     public void save(Resume r) {
         System.out.println("Сохранение..........");
-        if (size > STORAGE_LIMIT & size < 0) {
-            System.out.println("ERROR");
-        } else if (r == null) {
+        int index = findIndex(r.getUuid());
+        if (size > STORAGE_LIMIT) {
+            System.out.println("overflow");
+        } else if (index!=-1) {
             System.out.println("ERROR");
         } else {
             storage[size] = r;
