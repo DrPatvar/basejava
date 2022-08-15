@@ -8,87 +8,65 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+    private static final int STORAGE_LIMIT = 10000;
+    private final Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size = 0;
 
-    public boolean checkResume(Resume resume) {
+    public int findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (resume == storage[i]) {
-                System.out.println("Резюме " + resume + " найдено в данном массиве.");
-                return true;
+            if (uuid.equals(storage[i].getUuid())) {
+                System.out.println("указанный элемент: " + uuid + " найден");
+                return i;
             }
         }
-        return false;
-    }
-
-    public boolean checkUuid(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (uuid == storage[i].getUuid())
-                System.out.println("указанный элемент: " + uuid + " найден");
-            return true;
-        }
-        return false;
-    }
-
-    public boolean checkSize(int size) {
-        System.out.println("Проверка места в памяти массива: ");
-        if (size <= 9999) {
-            return true;
-        }
-        return false;
+        return -1;
     }
 
     public void clear() {
         System.out.println("Обнуление массива: ");
-        Arrays.fill(storage, null);
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
     public void update(Resume resume) {
         System.out.println("Обновление резюме..........");
-        if (checkResume(resume)) {
-            for (int i = 0; i < size; i++) {
-                if (storage[i] == resume) {
-                    storage[i].setUuid(resume.getUuid());
-                }
-            }
+        int index = findIndex(resume.getUuid());
+        if (index >= 0) {
+            storage[index].setUuid(resume.getUuid());
             System.out.println("Резюме " + resume + " обновлено в данном массиве.");
-        }
+        } else System.out.println("Не найдено резюме в массиве.");
     }
 
     public void save(Resume r) {
         System.out.println("Сохранение..........");
-        if (checkSize(size)) {
-            if (!checkResume(r)) {
-                storage[size] = r;
-                size++;
-                System.out.println("Добавлен элемент " + r + " в массив");
-            }
-        } else System.out.println("ERROR массив переполнен...");
-
+        if (size > STORAGE_LIMIT & size < 0) {
+            System.out.println("ERROR");
+        } else if (r == null) {
+            System.out.println("ERROR");
+        } else {
+            storage[size] = r;
+            size++;
+        }
     }
 
     public Resume get(String uuid) {
         System.out.println("Поиск и выдача элемента: " + uuid + " в маccиве");
-        if (checkUuid(uuid)) {
-            for (int i = 0; i < size; i++) {
-                if (storage[i].getUuid() == (uuid))
-                    return storage[i];
-            }
-        } else System.out.println("Элемент: " + uuid + " в массиве не найден");
+        int index = findIndex(uuid);
+        if (index >= 0) {
+            return storage[index];
+        } else {
+            System.out.println("Элемент: " + uuid + " в массиве не найден");
+        }
         return null;
     }
 
     public void delete(String uuid) {
         System.out.println("Удаление элемента " + uuid + " из массива");
-        if (checkUuid(uuid)) {
-            for (int i = 0; i < size; i++) {
-                if (storage[i].getUuid() == uuid) {
-                    storage[i] = storage[size - 1];
-                    storage[size - 1] = null;
-                    size--;
-                }
-            }
+        int index = findIndex(uuid);
+        if (index >= 0) {
+            storage[index] = storage[size - 1];
+            storage[size - 1] = null;
+            size--;
             System.out.println("указанный элемент: " + uuid + " удален из массива");
         }
     }
@@ -98,8 +76,7 @@ public class ArrayStorage {
      */
     public Resume[] getAll() {
         System.out.println("Все элементы массива: ");
-        Resume[] resumes = new Resume[size];
-        return resumes = Arrays.copyOfRange(storage, 0, size);
+        return Arrays.copyOfRange(storage, 0, size);
     }
 
     public int size() {
