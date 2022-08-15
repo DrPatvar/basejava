@@ -37,7 +37,7 @@ public class ArrayStorage {
         } else {
             storage[index].setUuid(resume.getUuid());
             System.out.println("Резюме " + resume + " обновлено в данном массиве.");
-            }
+        }
     }
 
     public void save(Resume r) {
@@ -45,7 +45,7 @@ public class ArrayStorage {
         int index = findIndex(r.getUuid());
         if (size > STORAGE_LIMIT) {
             System.out.println("overflow");
-        } else if (index!=-1) {
+        } else if (index != -1) {
             System.out.println("ERROR");
         } else {
             storage[size] = r;
@@ -58,20 +58,17 @@ public class ArrayStorage {
         int index = findIndex(uuid);
         if (index == -1) {
             System.out.println("Элемент: " + uuid + " в массиве не найден");
-
-        } else {
-            return storage[index];
+            return null;
         }
-        return null;
+        return storage[index];
     }
 
     public void delete(String uuid) {
         System.out.println("Удаление элемента " + uuid + " из массива");
         int index = findIndex(uuid);
-        if (index == -1){
-            System.out.println("Элкмент: " + uuid + " в массиве не найден." );
-        }
-        else{
+        if (index == -1) {
+            System.out.println("Элкмент: " + uuid + " в массиве не найден.");
+        } else {
             storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
