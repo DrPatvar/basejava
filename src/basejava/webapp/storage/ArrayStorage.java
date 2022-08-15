@@ -31,10 +31,13 @@ public class ArrayStorage {
     public void update(Resume resume) {
         System.out.println("Обновление резюме..........");
         int index = findIndex(resume.getUuid());
-        if (index >= 0) {
+        if (index == -1) {
+            System.out.println("Не найдено резюме в массиве.");
+
+        } else {
             storage[index].setUuid(resume.getUuid());
             System.out.println("Резюме " + resume + " обновлено в данном массиве.");
-        } else System.out.println("Не найдено резюме в массиве.");
+            }
     }
 
     public void save(Resume r) {
@@ -52,10 +55,11 @@ public class ArrayStorage {
     public Resume get(String uuid) {
         System.out.println("Поиск и выдача элемента: " + uuid + " в маccиве");
         int index = findIndex(uuid);
-        if (index >= 0) {
-            return storage[index];
-        } else {
+        if (index == -1) {
             System.out.println("Элемент: " + uuid + " в массиве не найден");
+
+        } else {
+            return storage[index];
         }
         return null;
     }
@@ -63,7 +67,10 @@ public class ArrayStorage {
     public void delete(String uuid) {
         System.out.println("Удаление элемента " + uuid + " из массива");
         int index = findIndex(uuid);
-        if (index >= 0) {
+        if (index == -1){
+            System.out.println("Элкмент: " + uuid + " в массиве не найден." );
+        }
+        else{
             storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
