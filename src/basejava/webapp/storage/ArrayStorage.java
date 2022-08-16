@@ -33,9 +33,9 @@ public class ArrayStorage {
         int index = findIndex(resume.getUuid());
         if (index == -1) {
             System.out.println("Не найдено резюме в массиве.");
-
         } else {
-            storage[index].setUuid(resume.getUuid());
+            storage[index]=resume;
+            //storage[index].setUuid(resume.getUuid());
             System.out.println("Резюме " + resume + " обновлено в данном массиве.");
         }
     }
@@ -44,9 +44,9 @@ public class ArrayStorage {
         System.out.println("Сохранение..........");
         int index = findIndex(r.getUuid());
         if (size > STORAGE_LIMIT) {
-            System.out.println("overflow");
+            System.out.println("Массив переполнен.");
         } else if (index != -1) {
-            System.out.println("ERROR");
+            System.out.println("Resume Not exist");
         } else {
             storage[size] = r;
             size++;
@@ -67,12 +67,12 @@ public class ArrayStorage {
         System.out.println("Удаление элемента " + uuid + " из массива");
         int index = findIndex(uuid);
         if (index == -1) {
-            System.out.println("Элкмент: " + uuid + " в массиве не найден.");
+            System.out.println("Элемент: " + uuid + " в массиве не найден.");
         } else {
             storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
-            System.out.println("указанный элемент: " + uuid + " удален из массива");
+            System.out.println("Указанный элемент: " + uuid + " удален из массива");
         }
     }
 
@@ -80,12 +80,10 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-        System.out.println("Все элементы массива: ");
         return Arrays.copyOfRange(storage, 0, size);
     }
 
     public int size() {
-        System.out.println("Количество элементов в массиве: ");
         return size;
     }
 }
