@@ -25,14 +25,14 @@ public class ArrayStorage extends AbstractArrayStorage {
         size = 0;
     }
 
-    public void update(Resume resume) {
+    public void update(Resume r) {
         System.out.println("Обновление резюме..........");
-        int index = findIndex(resume.getUuid());
+        int index = findIndex(r.getUuid());
         if (index == -1) {
             System.out.println("Не найдено резюме в массиве.");
         } else {
-            storage[index] = resume;
-            System.out.println("Резюме " + resume + " обновлено в данном массиве.");
+            storage[index] = r;
+            System.out.println("Резюме " + r + " обновлено в данном массиве.");
         }
     }
 
