@@ -7,10 +7,7 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage {
-    private static final int STORAGE_LIMIT = 10000;
-    private final Resume[] storage = new Resume[STORAGE_LIMIT];
-    private int size = 0;
+public class ArrayStorage extends AbstractArrayStorage {
 
     public int findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
@@ -34,8 +31,7 @@ public class ArrayStorage {
         if (index == -1) {
             System.out.println("Не найдено резюме в массиве.");
         } else {
-            storage[index]=resume;
-            //storage[index].setUuid(resume.getUuid());
+            storage[index] = resume;
             System.out.println("Резюме " + resume + " обновлено в данном массиве.");
         }
     }
@@ -46,21 +42,11 @@ public class ArrayStorage {
         if (size > STORAGE_LIMIT) {
             System.out.println("Массив переполнен.");
         } else if (index != -1) {
-            System.out.println("Resume Not exist");
+            System.out.println("Данное резюме " + r.getUuid() + " уже существует");
         } else {
             storage[size] = r;
             size++;
         }
-    }
-
-    public Resume get(String uuid) {
-        System.out.println("Поиск и выдача элемента: " + uuid + " в маccиве");
-        int index = findIndex(uuid);
-        if (index == -1) {
-            System.out.println("Элемент: " + uuid + " в массиве не найден");
-            return null;
-        }
-        return storage[index];
     }
 
     public void delete(String uuid) {
@@ -83,7 +69,4 @@ public class ArrayStorage {
         return Arrays.copyOfRange(storage, 0, size);
     }
 
-    public int size() {
-        return size;
-    }
 }
