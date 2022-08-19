@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
-    Resume sortArray;
 
     @Override
     public void clear() {
@@ -20,7 +19,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         System.out.println("Обновление резюме...");
         int index = findIndex(r.getUuid());
         if (index < 0 ) {
-            System.out.println("Резюме" + r.getUuid() + " не найдено в массиве.");
+            System.out.println("Резюме " + r.getUuid() + " не найдено в массиве.");
         } else {
             storage[index] = r;
             System.out.println("Резюме " + r + " обновлено в данном массиве.");
@@ -43,6 +42,15 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     public void delete(String uuid) {
+        System.out.println("Удаление элемента из массива...");
+        int index = findIndex(uuid);
+        if (index < 0){
+            System.out.println("Резюме " + uuid + " не найдено в массиве.");
+        }
+        else {
+            // логика
+              size--;
+        }
     }
 
     @Override
