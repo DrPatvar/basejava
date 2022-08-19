@@ -18,7 +18,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     public void update(Resume r) {
         System.out.println("Обновление резюме...");
         int index = findIndex(r.getUuid());
-        if (index < 0 ) {
+        if (index < 0) {
             System.out.println("Резюме " + r.getUuid() + " не найдено в массиве.");
         } else {
             storage[index] = r;
@@ -30,7 +30,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     public void save(Resume r) {
         System.out.println("Сохранение элемента...");
         int index = findIndex(r.getUuid());
-        if (index !=-1) {
+        if (index != -1) {
             System.out.println("Данное резюме " + r.getUuid() + " уже существует");
         } else if (size > STORAGE_LIMIT) {
             System.out.println("Массив переполнен");
@@ -44,12 +44,13 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     public void delete(String uuid) {
         System.out.println("Удаление элемента из массива...");
         int index = findIndex(uuid);
-        if (index < 0){
+        if (index < 0) {
             System.out.println("Резюме " + uuid + " не найдено в массиве.");
-        }
-        else {
-            // логика
-              size--;
+        } else {
+            for (int i = index; i < size; i++) {
+                storage[i] = storage[i + 1];
+            }
+            size--;
         }
     }
 
