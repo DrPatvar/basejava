@@ -1,8 +1,6 @@
 package basejava.webapp;
 
 import basejava.webapp.model.Resume;
-import basejava.webapp.storage.AbstractArrayStorage;
-import basejava.webapp.storage.ArrayStorage;
 import basejava.webapp.storage.SortedArrayStorage;
 import basejava.webapp.storage.Storage;
 
@@ -33,7 +31,7 @@ public class MainTestArrayStorage {
         printAll();
         ARRAY_STORAGE.update(r2);
         printAll();
-        ARRAY_STORAGE.delete(r2.getUuid());
+        ARRAY_STORAGE.delete(r3.getUuid());
         printAll();
         ARRAY_STORAGE.clear();
         printAll();
