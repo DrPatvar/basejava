@@ -11,7 +11,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     protected int findIndex(String uuid) {
         Resume searchKey = new Resume();
         searchKey.setUuid(uuid);
-        Arrays.sort(storage, Comparator.nullsLast(Comparator.<Resume>naturalOrder()));
+        Arrays.sort(storage, Comparator.nullsLast(Comparator.naturalOrder()));
         return Arrays.binarySearch(storage, 0, size, searchKey);
     }
 }
