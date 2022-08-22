@@ -15,7 +15,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     public Resume get(String uuid) {
         System.out.println("Поиск и выдача элемента: " + uuid + " в маccиве");
-        int index = findIndex(uuid);
+        int index = findSearchKey(uuid);
         if (index == -1) {
             System.out.println("Элемент: " + uuid + " в массиве не найден");
             return null;
@@ -29,7 +29,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     public void update(Resume r) {
         System.out.println("Обновление резюме..........");
-        int index = findIndex(r.getUuid());
+        int index = findSearchKey(r.getUuid());
         if (index == -1) {
             System.out.println("Не найдено резюме в массиве.");
         } else {
@@ -39,35 +39,34 @@ public abstract class AbstractArrayStorage implements Storage {
     }
     public void save(Resume r) {
         System.out.println("Сохранение..........");
-        int index = findIndex(r.getUuid());
+        int index = findSearchKey(r.getUuid());
         if (size > STORAGE_LIMIT) {
             System.out.println("Массив переполнен.");
         } else if (index != -1) {
             System.out.println("Данное резюме " + r.getUuid() + " уже существует");
         } else {
-            storage[size] = r;
-            size++;
+            insertResume(index,r);
         }
     }
-
     public void delete(String uuid) {
         System.out.println("Удаление элемента из массива...");
-        int index = findIndex(uuid);
+        int index = findSearchKey(uuid);
         if (index < 0) {
             System.out.println("Резюме " + uuid + " не найдено в массиве.");
         } else {
-            for (int i = index; i < size; i++) {
-                storage[i] = storage[i + 1];
-            }
-            size--;
+            deleteResume(index);
         }
     }
-
     public void clear() {
         System.out.println("Обнуление массива: ");
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    protected abstract int findIndex(String uuid);
+    protected abstract int findSearchKey(String uuid);
+
+    protected abstract void insertResume(int index, Resume resume);
+
+    protected abstract void deleteResume(int index);
+
 }
