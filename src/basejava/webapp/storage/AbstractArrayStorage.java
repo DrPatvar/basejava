@@ -16,7 +16,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public Resume get(String uuid) {
         System.out.println("Поиск и выдача элемента: " + uuid + " в маccиве");
         int index = findSearchKey(uuid);
-        if (index == -1) {
+        if (index < 0) {
             System.out.println("Элемент: " + uuid + " в массиве не найден");
             return null;
         }
@@ -30,24 +30,26 @@ public abstract class AbstractArrayStorage implements Storage {
     public void update(Resume r) {
         System.out.println("Обновление резюме..........");
         int index = findSearchKey(r.getUuid());
-        if (index == -1) {
+        if (index < 0) {
             System.out.println("Не найдено резюме в массиве.");
         } else {
             storage[index] = r;
             System.out.println("Резюме " + r + " обновлено в данном массиве.");
         }
     }
+
     public void save(Resume r) {
         System.out.println("Сохранение..........");
         int index = findSearchKey(r.getUuid());
         if (size > STORAGE_LIMIT) {
             System.out.println("Массив переполнен.");
-        } else if (index != -1) {
+        } else if (index >= 0) {
             System.out.println("Данное резюме " + r.getUuid() + " уже существует");
         } else {
-            insertResume(index,r);
+            insertResume(index, r);
         }
     }
+
     public void delete(String uuid) {
         System.out.println("Удаление элемента из массива...");
         int index = findSearchKey(uuid);
@@ -57,6 +59,7 @@ public abstract class AbstractArrayStorage implements Storage {
             deleteResume(index);
         }
     }
+
     public void clear() {
         System.out.println("Обнуление массива: ");
         Arrays.fill(storage, 0, size, null);

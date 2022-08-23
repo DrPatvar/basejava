@@ -11,10 +11,12 @@ public class ArrayStorage extends AbstractArrayStorage {
     protected void insertResume(int index, Resume resume) {
         storage[size] = resume;
         size++;
+
     }
 
     @Override
     protected void deleteResume(int index) {
+        System.out.println("Элемент " + storage[index] + " удален из массива");
         storage[index] = storage[size - 1];
         size--;
     }
