@@ -9,16 +9,17 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     @Override
     protected void insertResume(int index, Resume resume) {
         int insertionIndex = -index - 1;
-        System.arraycopy(storage, insertionIndex, storage, insertionIndex + 1, size);
+        System.arraycopy(storage, insertionIndex, storage, insertionIndex + 1, size - insertionIndex);//size - insertionIndex
         storage[insertionIndex] = resume;
-        size++;
     }
 
     @Override
     protected void deleteResume(int index) {
-        System.out.println("Элемент " + storage[index] + " удален из массива");
-        System.arraycopy(storage, index + 1, storage, index, size);
-        size--;
+        int numMoved = size - index - 1;
+        if (numMoved > 0) {
+            System.out.println("Элемент " + storage[index] + " удален из массива");
+            System.arraycopy(storage, index + 1, storage, index, numMoved);
+        }
     }
 
     @Override

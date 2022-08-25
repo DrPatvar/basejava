@@ -43,10 +43,11 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = findSearchKey(r.getUuid());
         if (size > STORAGE_LIMIT) {
             System.out.println("Массив переполнен.");
-        } else if (index >= 0) {
+        } else if (index > 0) {
             System.out.println("Данное резюме " + r.getUuid() + " уже существует");
         } else {
             insertResume(index, r);
+            size++;
         }
     }
 
@@ -57,6 +58,7 @@ public abstract class AbstractArrayStorage implements Storage {
             System.out.println("Резюме " + uuid + " не найдено в массиве.");
         } else {
             deleteResume(index);
+            size--;
         }
     }
 
