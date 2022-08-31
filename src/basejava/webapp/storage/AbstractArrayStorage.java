@@ -1,5 +1,8 @@
 package basejava.webapp.storage;
 
+import basejava.webapp.exception.ExistStorageException;
+import basejava.webapp.exception.NotExistStorageException;
+import basejava.webapp.exception.StorageException;
 import basejava.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -14,11 +17,9 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public Resume get(String uuid) {
-        System.out.println("Поиск и выдача элемента: " + uuid + " в маccиве");
         int index = findSearchKey(uuid);
         if (index < 0) {
-            System.out.println("Элемент: " + uuid + " в массиве не найден");
-            return null;
+            throw new NotExistStorageException(uuid);
         }
         return storage[index];
     }
@@ -28,23 +29,20 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public void update(Resume r) {
-        System.out.println("Обновление резюме..........");
         int index = findSearchKey(r.getUuid());
         if (index < 0) {
-            System.out.println("Не найдено резюме в массиве.");
+            throw new NotExistStorageException(r.getUuid());
         } else {
             storage[index] = r;
-            System.out.println("Резюме " + r + " обновлено в данном массиве.");
         }
     }
 
     public void save(Resume r) {
-        System.out.println("Сохранение..........");
         int index = findSearchKey(r.getUuid());
         if (size > STORAGE_LIMIT) {
-            System.out.println("Массив переполнен.");
+            throw new StorageException("Storage overflow", r.getUuid());
         } else if (index > 0) {
-            System.out.println("Данное резюме " + r.getUuid() + " уже существует");
+            throw new ExistStorageException(r.getUuid());
         } else {
             insertResume(index, r);
             size++;
@@ -52,10 +50,9 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public void delete(String uuid) {
-        System.out.println("Удаление элемента из массива...");
         int index = findSearchKey(uuid);
         if (index < 0) {
-            System.out.println("Резюме " + uuid + " не найдено в массиве.");
+            throw new NotExistStorageException(uuid);
         } else {
             deleteResume(index);
             size--;
@@ -63,7 +60,6 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public void clear() {
-        System.out.println("Обнуление массива: ");
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }

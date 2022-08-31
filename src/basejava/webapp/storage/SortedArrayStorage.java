@@ -17,7 +17,6 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     protected void deleteResume(int index) {
         int numMoved = size - index - 1;
         if (numMoved > 0) {
-            System.out.println("Элемент " + storage[index] + " удален из массива");
             System.arraycopy(storage, index + 1, storage, index, numMoved);
         }
     }
@@ -25,7 +24,6 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     @Override
     protected int findSearchKey(String uuid) {
         Resume searchKey = new Resume();
-        searchKey.setUuid(uuid);
         return Arrays.binarySearch(storage, 0, size, searchKey);
     }
 }
