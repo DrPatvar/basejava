@@ -91,6 +91,7 @@ public abstract class AbstractArrayStorageTest {
     }
     @Test
     public void delete() {
+        //
     }
 
     @Test
