@@ -37,7 +37,7 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
-    public void save(Resume r) {
+    public Resume save(Resume r) {
         int index = findSearchKey(r.getUuid());
         if (size > STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", r.getUuid());
@@ -47,6 +47,7 @@ public abstract class AbstractArrayStorage implements Storage {
             insertResume(index, r);
             size++;
         }
+        return r;
     }
 
     public void delete(String uuid) {
