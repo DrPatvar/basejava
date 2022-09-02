@@ -17,7 +17,7 @@ public class MainReflection {
         System.out.println(r);
         field.setAccessible(false);
 
-        //HW4 
+        //HW4
         Method method = r.getClass().getMethod("toString");
         method.setAccessible(true);
         System.out.println(method.invoke(r));
