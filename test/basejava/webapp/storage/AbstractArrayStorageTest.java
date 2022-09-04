@@ -60,15 +60,15 @@ public abstract class AbstractArrayStorageTest {
          Assert.assertEquals(expected, Arrays.stream(storage.getAll()).toList());
     }
 
-    @Test
+    @Test//не работает со Сортед
     public void update(){
-    Resume resume = new Resume("uuid1");
+    storage.update(new Resume("uuid1"));
 
     }
     @Ignore
     @Test(expected = NotExistStorageException.class)
     public void updateNotExistStorageException() {
-
+        storage.update(new Resume("newUuid"));
     }
     @Test
     public void save(){
@@ -79,23 +79,24 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = ExistStorageException.class)
     public void saveExistStorageException() {
-        Resume resume = new Resume("newUuid");
-        Resume savedProduct = storage.save(resume);
-        Assert.assertEquals(resume,savedProduct);
+      storage.save(new Resume("uuid1"));
 
     }
     @Ignore
     @Test(expected = StorageException.class)
     public void saveStorageException() {
-        Assert.fail("Массив переполнен раньше времени");
+
     }
     @Test
     public void delete() {
-        //
+        storage.delete("uuid1");
+        Assert.assertNull(storage.get("uuid1"));
+
     }
 
     @Test
     public void clear() {
-
+    storage.clear();
+    Assert.assertEquals(0, storage.size());
     }
 }
