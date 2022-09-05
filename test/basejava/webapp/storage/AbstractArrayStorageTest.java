@@ -9,11 +9,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assert.*;
+import java.util.*;
 
 public abstract class AbstractArrayStorageTest {
     private Storage storage;
@@ -26,7 +22,7 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Before
-    public void setUp() throws Exception{
+    public void setUp() throws Exception {
         storage.clear();
         storage.save(new Resume(UUID_1));
         storage.save(new Resume(UUID_2));
@@ -35,14 +31,15 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void size() {
-        Assert.assertEquals(3,storage.size());
+        Assert.assertEquals(3, storage.size());
     }
 
     @Test
     public void get() {
         Resume resume = new Resume("uuid1");
-        Assert.assertEquals(resume,storage.get("uuid1"));
+        Assert.assertEquals(resume, storage.get("uuid1"));
     }
+
     @Test(expected = NotExistStorageException.class)
     public void getNotExist() throws Exception {
         storage.get("dummy");
@@ -57,46 +54,52 @@ public abstract class AbstractArrayStorageTest {
         expected.add(resume1);
         expected.add(resume2);
         expected.add(resume3);
-         Assert.assertEquals(expected, Arrays.stream(storage.getAll()).toList());
+        Assert.assertEquals(expected, Arrays.stream(storage.getAll()).toList());
     }
 
     @Test//не работает со Сортед
-    public void update(){
-    storage.update(new Resume("uuid1"));
+    public void update() {
+        storage.update(new Resume("uuid1"));
 
     }
-    @Ignore
+
+
     @Test(expected = NotExistStorageException.class)
     public void updateNotExistStorageException() {
         storage.update(new Resume("newUuid"));
     }
+
     @Test
-    public void save(){
+    public void save() {
         Resume resume = new Resume("newUuid");
         Resume savedProduct = storage.save(resume);
         Assert.assertEquals(resume, savedProduct);
     }
 
-    @Test(expected = ExistStorageException.class)
+    @Test(expected = ExistStorageException.class)//не работает Sorted
     public void saveExistStorageException() {
-      storage.save(new Resume("uuid1"));
+        storage.save(new Resume("uuid1"));
 
     }
+
     @Ignore
     @Test(expected = StorageException.class)
     public void saveStorageException() {
-
+        Resume resume;
+        for (int i = 3; i <10 ; i++) {
+            storage.save(new Resume("uuid" + i + 1));
+        }
+        Assert.fail("Ошибка заполенеия массива");
     }
+
     @Test
     public void delete() {
         storage.delete("uuid1");
-        Assert.assertNull(storage.get("uuid1"));
-
     }
 
     @Test
     public void clear() {
-    storage.clear();
-    Assert.assertEquals(0, storage.size());
+        storage.clear();
+        Assert.assertEquals(0, storage.size());
     }
 }
