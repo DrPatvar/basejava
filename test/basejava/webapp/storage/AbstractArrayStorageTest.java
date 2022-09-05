@@ -9,7 +9,9 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class AbstractArrayStorageTest {
     private Storage storage;
@@ -57,7 +59,7 @@ public abstract class AbstractArrayStorageTest {
         Assert.assertEquals(expected, Arrays.stream(storage.getAll()).toList());
     }
 
-    @Test//не работает со Сортед
+    @Test
     public void update() {
         storage.update(new Resume("uuid1"));
 
@@ -76,20 +78,17 @@ public abstract class AbstractArrayStorageTest {
         Assert.assertEquals(resume, savedProduct);
     }
 
-    @Test(expected = ExistStorageException.class)//не работает Sorted
+    @Test(expected = ExistStorageException.class)
     public void saveExistStorageException() {
         storage.save(new Resume("uuid1"));
-
     }
 
-    @Ignore
     @Test(expected = StorageException.class)
     public void saveStorageException() {
-        Resume resume;
-        for (int i = 3; i <10 ; i++) {
+        for (int i = 3; i < 10000; i++) {
             storage.save(new Resume("uuid" + i + 1));
         }
-        Assert.fail("Ошибка заполенеия массива");
+        storage.save(new Resume("newUuid"));
     }
 
     @Test
