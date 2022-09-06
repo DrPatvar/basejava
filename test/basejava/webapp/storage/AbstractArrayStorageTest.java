@@ -8,18 +8,16 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public abstract class AbstractArrayStorageTest {
     private final Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
+    private static final String UUID_4 = "uuid4";
     private static final Resume RESUME_1 = new Resume(UUID_1);
     private static final Resume RESUME_2 = new Resume(UUID_2);
     private static final Resume RESUME_3 = new Resume(UUID_3);
+    private static final Resume RESUME_4 = new Resume(UUID_4);
     private static final String UUID_NOT_EXIST = "dummy";
 
     public AbstractArrayStorageTest(Storage storage) {
@@ -44,7 +42,7 @@ public abstract class AbstractArrayStorageTest {
     }
 
     public void assertGet(Resume resume) {
-        Assert.assertEquals(resume.getUuid(), storage.get(resume.getUuid()));
+        Assert.assertEquals(resume, storage.get(resume.getUuid()));
     }
 
     @Test
@@ -61,33 +59,27 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void getAll() {
-        Resume resume1 = new Resume("uuid1");
-        Resume resume2 = new Resume("uuid2");
-        Resume resume3 = new Resume("uuid3");
-        List expected = new ArrayList();
-        expected.add(resume1);
-        expected.add(resume2);
-        expected.add(resume3);
-        Assert.assertEquals(expected, Arrays.stream(storage.getAll()).toList());
+        Resume[] expected = {RESUME_1, RESUME_2, RESUME_3};
+        assertSize(3);
+        Assert.assertArrayEquals(expected, storage.getAll());
     }
 
     @Test
     public void update() {
-        storage.update(new Resume("uuid1"));
-
+        Assert.assertSame(RESUME_1, storage.get(RESUME_1.getUuid()));
     }
 
 
     @Test(expected = NotExistStorageException.class)
-    public void updateNotExistStorageException() {
-        storage.update(new Resume("newUuid"));
+    public void updateNotExist() {
+        storage.update(new Resume(UUID_NOT_EXIST));
     }
 
     @Test
     public void save() {
-        Resume resume = new Resume("newUuid");
-        Resume savedProduct = storage.save(resume);
-        Assert.assertEquals(resume, savedProduct);
+    storage.save(RESUME_4);
+    assertGet(RESUME_4);
+    assertSize(4);
     }
 
     @Test(expected = ExistStorageException.class)
