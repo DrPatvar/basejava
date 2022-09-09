@@ -32,8 +32,8 @@ public abstract class AbstractArrayStorageTest {
         storage.save(RESUME_3);
     }
 
-    public void assertSize(int x) {
-        Assert.assertEquals(x, storage.size());
+    public void assertSize(int expectedSize) {
+        Assert.assertEquals(expectedSize, storage.size());
     }
 
     @Test
@@ -95,7 +95,7 @@ public abstract class AbstractArrayStorageTest {
                 storage.save(new Resume("uuid" + i + 1));
             }
         } catch (StorageException e) {
-            e.printStackTrace();
+            Assert.fail("Переполнение произошло раньше времени");
         }
         storage.save(new Resume("newUuid"));
     }

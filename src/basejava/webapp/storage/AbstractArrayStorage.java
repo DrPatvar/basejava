@@ -7,15 +7,10 @@ import basejava.webapp.model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
-
-    public int size() {
-        return size;
-    }
-
     public Resume get(String uuid) {
         int index = findSearchKey(uuid);
         if (index < 0) {
@@ -65,10 +60,13 @@ public abstract class AbstractArrayStorage implements Storage {
         size = 0;
     }
 
+    @Override
+    public int size() {
+        return size();
+    }
     protected abstract int findSearchKey(String uuid);
 
     protected abstract void insertResume(int index, Resume resume);
 
     protected abstract void deleteResume(int index);
-
 }
