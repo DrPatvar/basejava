@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
 
+
     @Override
     protected void insertResume(int index, Resume resume) {
         int insertionIndex = -index - 1;
