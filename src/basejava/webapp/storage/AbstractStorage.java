@@ -2,19 +2,16 @@ package basejava.webapp.storage;
 
 import basejava.webapp.model.Resume;
 
-import java.util.Arrays;
-
-import static basejava.webapp.storage.AbstractArrayStorage.STORAGE_LIMIT;
-
 public abstract class AbstractStorage implements Storage {
+    protected Storage storage;
 
-    protected Resume[] storage = new Resume[STORAGE_LIMIT];
-    protected int size = 0;
+    public AbstractStorage(Storage storage) {
+        this.storage = storage;
+    }
 
     @Override
     public void clear() {
-        Arrays.fill(storage, 0, size, null);
-        size = 0;
+        arrayFill();
     }
 
     @Override
@@ -23,13 +20,15 @@ public abstract class AbstractStorage implements Storage {
     }
 
     @Override
-    public Resume save(Resume r) {
-        return null;
+    public void save(Resume r) {
+        saveStorage(r);
     }
+
+
 
     @Override
     public Resume get(String uuid) {
-        return null;
+        return getStorage(uuid);
     }
 
     @Override
@@ -39,17 +38,20 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public Resume[] getAll() {
-        return new Resume[0];
+        return getStorageAll();
     }
 
     @Override
     public int size() {
-        return size;
+        return sizeStorage();
     }
 
-    protected abstract int findSearchKey(String uuid);
+    protected abstract void saveStorage(Resume resume);
 
-    protected abstract void insertResume(int index, Resume resume);
+    public abstract int sizeStorage();
 
-    protected abstract void deleteResume(int index);
+    public abstract void arrayFill();
+
+    public abstract Resume getStorage(String uuid);
+    public abstract Resume[] getStorageAll();
 }

@@ -5,7 +5,9 @@ import basejava.webapp.model.Resume;
 import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
-
+    public SortedArrayStorage() {
+        super(new SortedArrayStorage());
+    }
 
     @Override
     protected void insertResume(int index, Resume resume) {

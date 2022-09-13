@@ -2,6 +2,7 @@ package basejava.webapp;
 
 import basejava.webapp.model.Resume;
 import basejava.webapp.storage.ArrayStorage;
+import basejava.webapp.storage.ListStorage;
 import basejava.webapp.storage.SortedArrayStorage;
 import basejava.webapp.storage.Storage;
 
@@ -9,7 +10,7 @@ import basejava.webapp.storage.Storage;
  * Test for your basejava.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    private final static Storage ARRAY_STORAGE = new SortedArrayStorage();
+    private final static Storage ARRAY_STORAGE = new ListStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume("uuid4");
