@@ -1,21 +1,20 @@
 package basejava.webapp.storage;
 
-import basejava.webapp.exception.ExistStorageException;
-import basejava.webapp.exception.NotExistStorageException;
-import basejava.webapp.exception.StorageException;
 import basejava.webapp.model.Resume;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+
+import static basejava.webapp.storage.AbstractArrayStorage.STORAGE_LIMIT;
 
 public abstract class AbstractStorage implements Storage {
 
-    protected Resume[] storage;
+    protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
     @Override
     public void clear() {
-
+        Arrays.fill(storage, 0, size, null);
+        size = 0;
     }
 
     @Override
@@ -45,8 +44,9 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
+
     protected abstract int findSearchKey(String uuid);
 
     protected abstract void insertResume(int index, Resume resume);

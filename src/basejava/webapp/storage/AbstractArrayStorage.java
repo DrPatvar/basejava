@@ -57,18 +57,18 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         }
     }
 
-    public void clear() {
+   /* public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
-    }
+    }*/
 
-    @Override
+    /*@Override
     public int size() {
-        return size();
-    }
-    protected abstract int findSearchKey(String uuid);
+        return size;
+    }*/
+  /*  protected abstract int findSearchKey(String uuid);
 
     protected abstract void insertResume(int index, Resume resume);
 
-    protected abstract void deleteResume(int index);
+    protected abstract void deleteResume(int index);*/
 }

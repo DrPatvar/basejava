@@ -2,8 +2,6 @@ package basejava.webapp.storage;
 
 import basejava.webapp.model.Resume;
 
-import java.util.ArrayList;
-
 public class ListStorage extends AbstractStorage {
 
     @Override
@@ -28,9 +26,9 @@ public class ListStorage extends AbstractStorage {
     protected void insertResume(int index, Resume resume) {
         final int s;
         if ((s = size) == storage.length)
-        System.arraycopy(storage, index,
-                storage, index + 1,
-                s - index);
+            System.arraycopy(storage, index,
+                    storage, index + 1,
+                    s - index);
         storage[index] = resume;
         size = s + 1;
 
