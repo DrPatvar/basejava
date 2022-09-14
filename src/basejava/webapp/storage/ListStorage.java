@@ -3,38 +3,52 @@ package basejava.webapp.storage;
 import basejava.webapp.model.Resume;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class ListStorage extends AbstractStorage {
-    private final ArrayList arrayList = new ArrayList();
+    private final ArrayList<Resume> arrayList = new ArrayList();
 
-    public ListStorage() {
-        super((Storage) new ArrayList());
+    @Override
+    protected int findSearchKey(String uuid) {
+        return arrayList.indexOf(uuid);
     }
 
     @Override
-    protected void saveStorage(Resume resume) {
+    protected void insertResume(int index, Resume resume) {
         arrayList.add(resume);
     }
 
     @Override
-    public void arrayFill() {
-        Collections.emptyList();
+    protected void deleteResume(int index) {
+        arrayList.remove(index);
     }
 
     @Override
-    public Resume getStorage(String uuid) {
-       // return arrayList.get(uuid);
+    protected void checkSize(Resume resume) {
+    }
+
+    @Override
+    public Resume getStorage(int index) {
+        return arrayList.get(index);
     }
 
     @Override
     public Resume[] getStorageAll() {
-        return null;
+        return arrayList.toArray(new Resume[arrayList.size()]);
+    }
+
+    @Override
+    protected void updateStorage(int index, Resume resume) {
+        arrayList.set(index, resume);
     }
 
     @Override
     public int sizeStorage() {
         return arrayList.size();
+    }
+
+    @Override
+    public void arrayClear() {
+        arrayList.clear();
     }
 
 }

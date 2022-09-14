@@ -7,18 +7,16 @@ import basejava.webapp.model.Resume;
  */
 public class ArrayStorage extends AbstractArrayStorage {
 
-    public ArrayStorage() {
-        super(new ArrayStorage());
-    }
-
     @Override
     protected void insertResume(int index, Resume resume) {
         storage[size] = resume;
+        size++;
     }
 
     @Override
     protected void deleteResume(int index) {
         storage[index] = storage[size - 1];
+        size--;
     }
 
     public int findSearchKey(String uuid) {
