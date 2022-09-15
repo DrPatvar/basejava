@@ -57,4 +57,8 @@ public class ListStorage extends AbstractStorage {
         arrayList.clear();
     }
 
+    @Override
+    protected void isOverFlow(Resume resume) {
+
+    }
 }

@@ -15,6 +15,7 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public void save(Resume r) {
         int searchKey = getNotExistSearchKey(r.getUuid());
+        isOverFlow(r);
         doSave(searchKey, r);
     }
 
@@ -76,6 +77,8 @@ public abstract class AbstractStorage implements Storage {
     public abstract Resume doGet(int index);
 
     public abstract Resume[] doCopyAll();
+
+    protected abstract void isOverFlow(Resume resume);
 
     protected abstract void doSave(int index, Resume resume);
 
