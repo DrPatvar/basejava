@@ -5,39 +5,45 @@ import basejava.webapp.model.Resume;
 import java.util.ArrayList;
 
 public class ListStorage extends AbstractStorage {
-    private final ArrayList<Resume> arrayList = new ArrayList();
+    protected ArrayList<Resume> arrayList = new ArrayList<>();
 
     @Override
     protected int findSearchKey(String uuid) {
-        return arrayList.indexOf(uuid);
+        for (int i = 0; i < arrayList.size(); i++) {
+            if (uuid.equals(arrayList.get(i).getUuid())) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
-    protected void insertResume(int index, Resume resume) {
+    protected void doSave(int index, Resume resume) {
         arrayList.add(resume);
     }
 
     @Override
-    protected void deleteResume(int index) {
+    protected void doDelete(int index) {
         arrayList.remove(index);
     }
 
     @Override
-    protected void checkSize(Resume resume) {
+    protected boolean isExist(int index) {
+        return index >= 0;
     }
 
     @Override
-    public Resume getStorage(int index) {
+    public Resume doGet(int index) {
         return arrayList.get(index);
     }
 
     @Override
-    public Resume[] getStorageAll() {
+    public Resume[] doCopyAll() {
         return arrayList.toArray(new Resume[arrayList.size()]);
     }
 
     @Override
-    protected void updateStorage(int index, Resume resume) {
+    protected void doUpdate(int index, Resume resume) {
         arrayList.set(index, resume);
     }
 
@@ -47,7 +53,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public void arrayClear() {
+    public void doClear() {
         arrayList.clear();
     }
 

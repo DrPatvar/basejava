@@ -6,54 +6,61 @@ import basejava.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
 
+
     @Override
     public void clear() {
-        arrayClear();
+        doClear();
     }
 
     @Override
     public void save(Resume r) {
-        int index = findSearchKey(r.getUuid());
-        checkSize(r);
-        if (index >= 0) {
-            throw new ExistStorageException(r.getUuid());
-        } else {
-            insertResume(index, r);
-        }
+        int searchKey = getNotExistSearchKey(r.getUuid());
+        doSave(searchKey, r);
     }
 
     @Override
     public Resume get(String uuid) {
-        int index = findSearchKey(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        return getStorage(index);
+        int searchKey = getExistSearchKey(uuid);
+        return doGet(searchKey);
     }
 
     @Override
     public void delete(String uuid) {
-        int index = findSearchKey(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        } else {
-            deleteResume(index);
-        }
+        int searchKey = getExistSearchKey(uuid);
+        doDelete(searchKey);
     }
 
     @Override
     public void update(Resume r) {
         int index = findSearchKey(r.getUuid());
-        if (index < 0) {
+        if (!isExist(index)) {
             throw new NotExistStorageException(r.getUuid());
         } else {
-            updateStorage(index, r);
+            doUpdate(index, r);
+        }
+    }
+
+    protected int getExistSearchKey(String uuid) {
+        int index = findSearchKey(uuid);
+        if (isExist(index)) {
+            return index;
+        } else {
+            throw new NotExistStorageException(uuid);
+        }
+    }
+
+    protected int getNotExistSearchKey(String uuid) {
+        int index = findSearchKey(uuid);
+        if (!isExist(index)) {
+            return index;
+        } else {
+            throw new ExistStorageException(uuid);
         }
     }
 
     @Override
     public Resume[] getAll() {
-        return getStorageAll();
+        return doCopyAll();
     }
 
     @Override
@@ -64,19 +71,21 @@ public abstract class AbstractStorage implements Storage {
 
     public abstract int sizeStorage();
 
-    public abstract void arrayClear();
+    public abstract void doClear();
 
-    public abstract Resume getStorage(int index);
+    public abstract Resume doGet(int index);
 
-    public abstract Resume[] getStorageAll();
+    public abstract Resume[] doCopyAll();
 
-    protected abstract void updateStorage(int index, Resume resume);
+    protected abstract void doSave(int index, Resume resume);
 
-    protected abstract void checkSize(Resume resume);
+    protected abstract void doDelete(int index);
+
+    protected abstract boolean isExist(int index);
+
+    protected abstract void doUpdate(int index, Resume resume);
 
     protected abstract int findSearchKey(String uuid);
 
-    protected abstract void insertResume(int index, Resume resume);
 
-    protected abstract void deleteResume(int index);
 }
