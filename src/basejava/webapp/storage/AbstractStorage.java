@@ -14,46 +14,46 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void save(Resume r) {
-        int searchKey = getNotExistSearchKey(r.getUuid());
+        Object searchKey = getNotExistSearchKey(r.getUuid());
         isOverFlow(r);
         doSave(searchKey, r);
     }
 
     @Override
     public Resume get(String uuid) {
-        int searchKey = getExistSearchKey(uuid);
+        Object searchKey = getExistSearchKey(uuid);
         return doGet(searchKey);
     }
 
     @Override
     public void delete(String uuid) {
-        int searchKey = getExistSearchKey(uuid);
+        Object searchKey = getExistSearchKey(uuid);
         doDelete(searchKey);
     }
 
     @Override
     public void update(Resume r) {
-        int index = findSearchKey(r.getUuid());
-        if (!isExist(index)) {
+        Object searchKey = findSearchKey(r.getUuid());
+        if (!isExist(searchKey)) {
             throw new NotExistStorageException(r.getUuid());
         } else {
-            doUpdate(index, r);
+            doUpdate(searchKey, r);
         }
     }
 
-    protected int getExistSearchKey(String uuid) {
-        int index = findSearchKey(uuid);
-        if (isExist(index)) {
-            return index;
+    protected Object getExistSearchKey(String uuid) {
+        Object searchKey = findSearchKey(uuid);
+        if (isExist(searchKey)) {
+            return searchKey;
         } else {
             throw new NotExistStorageException(uuid);
         }
     }
 
-    protected int getNotExistSearchKey(String uuid) {
-        int index = findSearchKey(uuid);
-        if (!isExist(index)) {
-            return index;
+    protected Object getNotExistSearchKey(String uuid) {
+        Object searchKey = findSearchKey(uuid);
+        if (!isExist(searchKey)) {
+            return searchKey;
         } else {
             throw new ExistStorageException(uuid);
         }
@@ -74,21 +74,21 @@ public abstract class AbstractStorage implements Storage {
 
     public abstract void doClear();
 
-    public abstract Resume doGet(int index);
+    public abstract Resume doGet(Object searchKey);
 
     public abstract Resume[] doCopyAll();
 
     protected abstract void isOverFlow(Resume resume);
 
-    protected abstract void doSave(int index, Resume resume);
+    protected abstract void doSave(Object searchKey, Resume resume);
 
-    protected abstract void doDelete(int index);
+    protected abstract void doDelete(Object searchKey);
 
-    protected abstract boolean isExist(int index);
+    protected abstract boolean isExist(Object searchKey);
 
-    protected abstract void doUpdate(int index, Resume resume);
+    protected abstract void doUpdate(Object searchKey, Resume resume);
 
-    protected abstract int findSearchKey(String uuid);
+    protected abstract Object findSearchKey(String uuid);
 
 
 }
