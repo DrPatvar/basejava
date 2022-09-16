@@ -7,7 +7,7 @@ import basejava.webapp.storage.*;
  * Test for your basejava.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    private final static Storage ARRAY_STORAGE = new MapStorage();
+    private final static Storage ARRAY_STORAGE = new ListStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume("uuid4");
@@ -20,7 +20,7 @@ public class MainTestArrayStorage {
         ARRAY_STORAGE.save(r3);
         ARRAY_STORAGE.save(r4);
 
-        System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.getUuid()));
+        System.out.println("Get r3: " + ARRAY_STORAGE.get(r3.getUuid()));
         System.out.println("Size: " + ARRAY_STORAGE.size());
        // System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
 
@@ -28,6 +28,8 @@ public class MainTestArrayStorage {
         ARRAY_STORAGE.update(r2);
         printAll();
         ARRAY_STORAGE.delete(r4.getUuid());
+        printAll();
+        System.out.println("Size: " + ARRAY_STORAGE.size());
         printAll();
         ARRAY_STORAGE.clear();
         printAll();

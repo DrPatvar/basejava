@@ -24,7 +24,8 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void doDelete(Object searchKey) {
-        arrayList.remove(searchKey);
+        arrayList.remove((int)searchKey);
+        arrayList.trimToSize();
     }
 
     @Override
