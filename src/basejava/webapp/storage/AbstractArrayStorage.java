@@ -12,11 +12,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected boolean isExist(Object searchKey) {
-      return (int)searchKey >= 0;
+        return (int) searchKey >= 0;
     }
 
     @Override
     protected void doSave(Object searchKey, Resume resume) {
+        if (size == STORAGE_LIMIT) {
+            throw new ExistStorageException(resume.getUuid());
+        }
         insertResume((Integer) searchKey, resume);
     }
 
@@ -54,13 +57,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected abstract void insertResume(int index, Resume resume);
 
     protected abstract void deleteResume(int index);
-
-    @Override
-    protected void isOverFlow(Resume resume) {
-        if (size == STORAGE_LIMIT){
-            throw new ExistStorageException(resume.getUuid());
-        }
-    }
 }
 
 

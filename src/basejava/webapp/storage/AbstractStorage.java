@@ -15,7 +15,6 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public void save(Resume r) {
         Object searchKey = getNotExistSearchKey(r.getUuid());
-        isOverFlow(r);
         doSave(searchKey, r);
     }
 
@@ -33,12 +32,8 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume r) {
-        Object searchKey = findSearchKey(r.getUuid());
-        if (!isExist(searchKey)) {
-            throw new NotExistStorageException(r.getUuid());
-        } else {
-            doUpdate(searchKey, r);
-        }
+        Object searchKey = getExistSearchKey(r.getUuid());
+        doUpdate(searchKey, r);
     }
 
     protected Object getExistSearchKey(String uuid) {
@@ -77,8 +72,6 @@ public abstract class AbstractStorage implements Storage {
     public abstract Resume doGet(Object searchKey);
 
     public abstract Resume[] doCopyAll();
-
-    protected abstract void isOverFlow(Resume resume);
 
     protected abstract void doSave(Object searchKey, Resume resume);
 

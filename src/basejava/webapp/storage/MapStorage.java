@@ -2,29 +2,22 @@ package basejava.webapp.storage;
 
 import basejava.webapp.model.Resume;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
     protected LinkedHashMap<Object, Resume> hashMap = new LinkedHashMap<>();
 
     @Override
     protected Object findSearchKey(String uuid) {
-        if (hashMap.containsKey(uuid)){
+        if (hashMap.containsKey(uuid)) {
             return uuid;
         }
         return -1;
     }
 
     @Override
-    protected void isOverFlow(Resume resume) {
-    }
-
-    @Override
     protected void doSave(Object searchKey, Resume resume) {
-        hashMap.put(resume.getUuid(),resume);
+        hashMap.put(resume.getUuid(), resume);
     }
 
     @Override
@@ -54,7 +47,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     public Resume[] doCopyAll() {
-        return hashMap.values().toArray(new Resume[hashMap.size()]);
+        return hashMap.values().toArray(new Resume[0]);
     }
 
     @Override

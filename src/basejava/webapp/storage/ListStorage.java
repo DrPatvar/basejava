@@ -24,13 +24,12 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void doDelete(Object searchKey) {
-        arrayList.remove((int)searchKey);
-        arrayList.trimToSize();
+        arrayList.remove((int) searchKey);
     }
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return (int)searchKey >= 0;
+        return (int) searchKey >= 0;
     }
 
     @Override
@@ -56,10 +55,5 @@ public class ListStorage extends AbstractStorage {
     @Override
     public void doClear() {
         arrayList.clear();
-    }
-
-    @Override
-    protected void isOverFlow(Resume resume) {
-
     }
 }
