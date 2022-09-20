@@ -17,6 +17,5 @@ public class MapResumeStorageTest extends AbstractStorageTest {
     @Override
     @Test
     public void updateMap() {
-        super.updateMap();
     }
 }
