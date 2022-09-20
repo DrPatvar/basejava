@@ -5,7 +5,10 @@ import basejava.webapp.exception.NotExistStorageException;
 import basejava.webapp.model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.platform.suite.api.Suite;
+import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +20,10 @@ public class AbstractStorageTest {
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
-    private static final String FULLNAME1 = "Resume";
-    private static final String FULLNAME2 = "Resume";
-    private static final String FULLNAME3 = "Resume";
-    private static final String FULLNAME4 = "Resume";
+    private static final String FULLNAME1 = "Resume1";
+    private static final String FULLNAME2 = "Resume2";
+    private static final String FULLNAME3 = "Resume3";
+    private static final String FULLNAME4 = "Resume4";
 
     private static final Resume RESUME_1;
     private static final Resume RESUME_2;
@@ -60,6 +63,7 @@ public class AbstractStorageTest {
         Assert.assertEquals(resume, storage.get(resume.getUuid()));
     }
 
+
     @Test
     public void get() {
         assertGet(RESUME_1);
@@ -86,6 +90,10 @@ public class AbstractStorageTest {
     @Test
     public void update() {
         Assert.assertSame(RESUME_1, storage.get(RESUME_1.getUuid()));
+    }
+
+    public void updateMap(){
+        Assert.assertSame(RESUME_1, storage.get(RESUME_1.getFullName()));
     }
 
 
