@@ -3,6 +3,7 @@ package basejava.webapp.storage;
 import basejava.webapp.model.Resume;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListStorage extends AbstractStorage {
     protected ArrayList<Resume> arrayList = new ArrayList<>();
@@ -38,8 +39,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] doCopyAll() {
-        return arrayList.toArray(new Resume[arrayList.size()]);
+    public List<Resume> doCopyAll() {
+        return arrayList;
     }
 
     @Override

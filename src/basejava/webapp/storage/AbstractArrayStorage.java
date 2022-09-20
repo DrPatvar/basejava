@@ -3,7 +3,7 @@ package basejava.webapp.storage;
 import basejava.webapp.exception.ExistStorageException;
 import basejava.webapp.model.Resume;
 
-import java.util.Arrays;
+import java.util.*;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10000;
@@ -50,8 +50,12 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] doCopyAll() {
-        return Arrays.copyOfRange(storage, 0, size);
+    public List<Resume> doCopyAll() {
+        List<Resume> list = new ArrayList<>();
+        for (int i = 0; i <size ; i++) {
+            list.add(storage[i]);
+        }
+        return list;
     }
 
     protected abstract void insertResume(int index, Resume resume);

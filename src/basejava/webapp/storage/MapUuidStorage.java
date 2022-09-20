@@ -3,8 +3,9 @@ package basejava.webapp.storage;
 import basejava.webapp.model.Resume;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
-public class MapStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage {
     protected LinkedHashMap<Object, Resume> hashMap = new LinkedHashMap<>();
 
     @Override
@@ -46,8 +47,8 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] doCopyAll() {
-        return hashMap.values().toArray(new Resume[0]);
+    public List<Resume> doCopyAll() {
+        return hashMap.values().stream().toList();
     }
 
     @Override

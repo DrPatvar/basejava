@@ -16,12 +16,12 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
         storage.clear();
         try {
             for (int i = 0; i < 10000; i++) {
-                storage.save(new Resume("uuid" + i + 1));
+                storage.save(new Resume("uuid" + i + 1, "resume " + i));
             }
         } catch (StorageException e) {
             Assert.fail("Переполнение произошло раньше времени");
         }
-        storage.save(new Resume("newUuid"));
+        storage.save(new Resume("newUuid", "newResume"));
     }
 
 }
