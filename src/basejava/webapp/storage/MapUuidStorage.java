@@ -2,6 +2,7 @@ package basejava.webapp.storage;
 
 import basejava.webapp.model.Resume;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class MapUuidStorage extends AbstractStorage {
 
     @Override
     public List<Resume> doCopyAll() {
-        return hashMap.values().stream().toList();
+        return new ArrayList<>(hashMap.values());
     }
 
     @Override
