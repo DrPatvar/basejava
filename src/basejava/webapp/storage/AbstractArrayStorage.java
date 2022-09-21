@@ -16,7 +16,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doSave(Object searchKey, Resume resume) {
+    protected void doSave(Resume resume, Object searchKey) {
         if (size == STORAGE_LIMIT) {
             throw new ExistStorageException(resume.getUuid());
         }
@@ -45,7 +45,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doUpdate(Object searchKey, Resume resume) {
+    protected void doUpdate(Resume resume, Object searchKey) {
         storage[(int) searchKey] = resume;
     }
 

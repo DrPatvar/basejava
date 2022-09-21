@@ -10,6 +10,24 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractStorage implements Storage {
 
+    protected abstract Object findSearchKey(String uuid);
+
+    public abstract int sizeStorage();
+
+    public abstract void doClear();
+
+    public abstract Resume doGet(Object searchKey);
+
+    public abstract List<Resume> doCopyAll();
+
+    protected abstract void doSave(Resume resume, Object searchKey);
+
+    protected abstract void doDelete(Object searchKey);
+
+    protected abstract boolean isExist(Object searchKey);
+
+    protected abstract void doUpdate(Resume resume, Object searchKey);
+
 
     @Override
     public void clear() {
@@ -19,7 +37,7 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public void save(Resume r) {
         Object searchKey = getNotExistSearchKey(r.getUuid());
-        doSave(searchKey, r);
+        doSave(r, searchKey);
     }
 
     @Override
@@ -37,7 +55,7 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public void update(Resume r) {
         Object searchKey = getExistSearchKey(r.getUuid());
-        doUpdate(searchKey, r);
+        doUpdate(r, searchKey);
     }
 
     protected Object getExistSearchKey(String uuid) {
@@ -60,8 +78,10 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-       Comparator<Resume> comparator = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
-        return doCopyAll().stream().sorted(comparator).collect(Collectors.toList());
+        return doCopyAll().stream().
+                sorted(Comparator.comparing(Resume::getFullName)).
+                sorted(Comparator.comparing(Resume::getUuid)).
+                collect(Collectors.toList());
     }
 
     @Override
@@ -70,23 +90,7 @@ public abstract class AbstractStorage implements Storage {
     }
 
 
-    public abstract int sizeStorage();
 
-    public abstract void doClear();
-
-    public abstract Resume doGet(Object searchKey);
-
-    public abstract List<Resume> doCopyAll();
-
-    protected abstract void doSave(Object searchKey, Resume resume);
-
-    protected abstract void doDelete(Object searchKey);
-
-    protected abstract boolean isExist(Object searchKey);
-
-    protected abstract void doUpdate(Object searchKey, Resume resume);
-
-    protected abstract Object findSearchKey(String uuid);
 
 
 }

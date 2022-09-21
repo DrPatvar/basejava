@@ -11,8 +11,10 @@ public class Resume {
     private final String uuid;
     private  String fullName;
 
-    public Resume() {
+    public Resume(String fullName) {
         this.uuid = (UUID.randomUUID().toString());
+        this.fullName = fullName;
+
     }
 
     public Resume(String uuid, String fullName) {
@@ -38,7 +40,7 @@ public class Resume {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Resume resume = (Resume) obj;
-        return uuid.equals(resume.uuid) || fullName.equals(resume.fullName);
+        return fullName.equals(resume.fullName);
     }
 
     @Override

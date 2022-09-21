@@ -2,50 +2,37 @@ package basejava.webapp.storage;
 
 import basejava.webapp.model.Resume;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class MapResumeStorage extends AbstractStorage {
     protected HashMap<Object, Resume> hashMap = new HashMap<Object, Resume>();
 
+
     @Override
-    public void save(Resume r) {
-        Object searchKey = getNotExistSearchKey(r.getFullName());
-        doSave(searchKey, r);
+    protected Object findSearchKey(String uuid) {
+       return hashMap.get(uuid);
     }
 
     @Override
-    public void update(Resume r) {
-        Object searchKey = getExistSearchKey(r.getFullName());
-        doUpdate(searchKey, r);
-    }
-
-    @Override
-    protected Object findSearchKey(String fullName) {
-        if (hashMap.containsKey(fullName)) {
-            return fullName;
-        }
-        return -1;
-    }
-
-    @Override
-    protected void doSave(Object searchKey, Resume resume) {
-        hashMap.put(resume.getFullName(), resume);
+    protected void doSave(Resume resume, Object searchKey) {
+        hashMap.put(resume.getUuid(), resume);
     }
 
     @Override
     protected void doDelete(Object searchKey) {
-        hashMap.remove(searchKey);
+        hashMap.remove(((Resume)searchKey).getUuid());
     }
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return hashMap.containsKey(searchKey);
+        return searchKey !=null;
     }
 
     @Override
-    protected void doUpdate(Object searchKey, Resume resume) {
-        hashMap.put(searchKey, resume);
+    protected void doUpdate(Resume resume, Object searchKey) {
+        hashMap.put(resume.getUuid(), (Resume) searchKey);
     }
 
     @Override
@@ -55,12 +42,12 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     public Resume doGet(Object searchKey) {
-        return hashMap.get(searchKey);
+        return (Resume) searchKey;
     }
 
     @Override
     public List<Resume> doCopyAll() {
-        return hashMap.values().stream().toList();
+        return new ArrayList<>(hashMap.values());
     }
 
     @Override

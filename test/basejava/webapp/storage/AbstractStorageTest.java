@@ -92,9 +92,6 @@ public class AbstractStorageTest {
         Assert.assertSame(RESUME_1, storage.get(RESUME_1.getUuid()));
     }
 
-    public void updateMap(){
-        Assert.assertSame(RESUME_1, storage.get(RESUME_1.getFullName()));
-    }
 
 
     @Test(expected = NotExistStorageException.class)
