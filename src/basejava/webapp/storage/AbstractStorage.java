@@ -8,26 +8,26 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class AbstractStorage implements Storage {
+public abstract class AbstractStorage<SK> implements Storage {
     private static final Comparator COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
 
-    protected abstract Object findSearchKey(String uuid);
+    protected abstract SK findSearchKey(String uuid);
 
     public abstract int sizeStorage();
 
     public abstract void doClear();
 
-    public abstract Resume doGet(Object searchKey);
+    public abstract Resume doGet(SK searchKey);
 
     public abstract List<Resume> doCopyAll();
 
-    protected abstract void doSave(Resume resume, Object searchKey);
+    protected abstract void doSave(Resume resume, SK searchKey);
 
-    protected abstract void doDelete(Object searchKey);
+    protected abstract void doDelete(SK searchKey);
 
-    protected abstract boolean isExist(Object searchKey);
+    protected abstract boolean isExist(SK searchKey);
 
-    protected abstract void doUpdate(Resume resume, Object searchKey);
+    protected abstract void doUpdate(Resume resume, SK searchKey);
 
 
     @Override
@@ -37,30 +37,30 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void save(Resume r) {
-        Object searchKey = getNotExistSearchKey(r.getUuid());
+        SK searchKey = getNotExistSearchKey(r.getUuid());
         doSave(r, searchKey);
     }
 
     @Override
     public Resume get(String uuid) {
-        Object searchKey = getExistSearchKey(uuid);
+        SK searchKey = getExistSearchKey(uuid);
         return doGet(searchKey);
     }
 
     @Override
     public void delete(String uuid) {
-        Object searchKey = getExistSearchKey(uuid);
+        SK searchKey = getExistSearchKey(uuid);
         doDelete(searchKey);
     }
 
     @Override
     public void update(Resume r) {
-        Object searchKey = getExistSearchKey(r.getUuid());
+        SK searchKey = getExistSearchKey(r.getUuid());
         doUpdate(r, searchKey);
     }
 
-    protected Object getExistSearchKey(String uuid) {
-        Object searchKey = findSearchKey(uuid);
+    protected SK getExistSearchKey(String uuid) {
+        SK searchKey = findSearchKey(uuid);
         if (isExist(searchKey)) {
             return searchKey;
         } else {
@@ -68,8 +68,8 @@ public abstract class AbstractStorage implements Storage {
         }
     }
 
-    protected Object getNotExistSearchKey(String uuid) {
-        Object searchKey = findSearchKey(uuid);
+    protected SK getNotExistSearchKey(String uuid) {
+        SK searchKey = findSearchKey(uuid);
         if (!isExist(searchKey)) {
             return searchKey;
         } else {

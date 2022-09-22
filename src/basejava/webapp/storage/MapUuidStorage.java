@@ -6,35 +6,32 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MapUuidStorage extends AbstractStorage {
-    protected HashMap<Object, Resume> hashMap = new HashMap<>();
+public class MapUuidStorage extends AbstractStorage<String> {
+    protected HashMap<String, Resume> hashMap = new HashMap<>();
 
     @Override
-    protected Object findSearchKey(String uuid) {
-        if (hashMap.containsKey(uuid)) {
-            return uuid;
-        }
-        return -1;
+    protected String findSearchKey(String uuid) {
+        return uuid;
     }
 
     @Override
-    protected void doSave(Resume resume, Object searchKey) {
+    protected void doSave(Resume resume, String uuid) {
         hashMap.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected void doDelete(Object searchKey) {
-        hashMap.remove(searchKey);
+    protected void doDelete(String uuid) {
+        hashMap.remove(uuid);
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        return hashMap.containsKey(searchKey);
+    protected boolean isExist(String  uuid) {
+        return hashMap.containsKey(uuid);
     }
 
     @Override
-    protected void doUpdate(Resume resume, Object searchKey) {
-        hashMap.put(searchKey, resume);
+    protected void doUpdate(Resume resume, String uuid) {
+        hashMap.put(uuid, resume);
     }
 
     @Override
@@ -43,8 +40,8 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume doGet(Object searchKey) {
-        return hashMap.get(searchKey);
+    public Resume doGet(String uuid) {
+        return hashMap.get(uuid);
     }
 
     @Override
