@@ -5,12 +5,10 @@ import basejava.webapp.exception.NotExistStorageException;
 import basejava.webapp.model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.platform.suite.api.Suite;
-import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AbstractStorageTest {
@@ -77,21 +75,16 @@ public class AbstractStorageTest {
     }
 
     @Test
-    public void getAll() {
-        List<Resume> expected =  new ArrayList<>();
-        expected.add(RESUME_1);
-        expected.add(RESUME_2);
-        expected.add(RESUME_3);
+    public void getAllSorted() {
+        List<Resume> list = storage.getAllSorted();
         assertSize(3);
-
-        Assert.assertArrayEquals(expected.toArray(), storage.getAllSorted().toArray());
+        Assert.assertEquals(list, Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
     }
 
     @Test
     public void update() {
         Assert.assertSame(RESUME_1, storage.get(RESUME_1.getUuid()));
     }
-
 
 
     @Test(expected = NotExistStorageException.class)
