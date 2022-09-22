@@ -7,8 +7,10 @@ import basejava.webapp.model.Resume;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Logger;
 
 public abstract class AbstractStorage<SK> implements Storage {
+    private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
     private static final Comparator COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
 
     protected abstract SK findSearchKey(String uuid);
@@ -32,29 +34,34 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     @Override
     public void clear() {
+        LOG.info("CLEAR");
         doClear();
     }
 
     @Override
     public void save(Resume r) {
+        LOG.info("SAVE " + r) ;
         SK searchKey = getNotExistSearchKey(r.getUuid());
         doSave(r, searchKey);
     }
 
     @Override
     public Resume get(String uuid) {
+        LOG.info("GET "+ uuid);
         SK searchKey = getExistSearchKey(uuid);
         return doGet(searchKey);
     }
 
     @Override
     public void delete(String uuid) {
+        LOG.info("DELETE " + uuid);
         SK searchKey = getExistSearchKey(uuid);
         doDelete(searchKey);
     }
 
     @Override
     public void update(Resume r) {
+        LOG.info("UPDATE " + r) ;
         SK searchKey = getExistSearchKey(r.getUuid());
         doUpdate(r, searchKey);
     }
@@ -64,6 +71,7 @@ public abstract class AbstractStorage<SK> implements Storage {
         if (isExist(searchKey)) {
             return searchKey;
         } else {
+            LOG.warning("Resume " + uuid +  " not exist");
             throw new NotExistStorageException(uuid);
         }
     }
@@ -73,12 +81,14 @@ public abstract class AbstractStorage<SK> implements Storage {
         if (!isExist(searchKey)) {
             return searchKey;
         } else {
+            LOG.warning("Resume " + uuid + " already exist");
             throw new ExistStorageException(uuid);
         }
     }
 
     @Override
     public List<Resume> getAllSorted() {
+        LOG.info("GetAllSorted");
         List<Resume> resumes = new ArrayList<>();
         resumes.addAll(doCopyAll());
         resumes.sort(COMPARATOR);
