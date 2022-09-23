@@ -11,6 +11,7 @@ public class Resume {
     // Unique identifier
     private final String uuid;
     private final String fullName;
+    private String SectionType;
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -30,7 +31,9 @@ public class Resume {
     public String getFullName() {
         return fullName;
     }
-
+    public void SectionType(){
+        
+    }
 
     @Override
     public boolean equals(Object o) {
