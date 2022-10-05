@@ -1,5 +1,6 @@
 package basejava.webapp.model;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -11,7 +12,10 @@ public class Resume {
     // Unique identifier
     private final String uuid;
     private final String fullName;
-    private String SectionType;
+    private Map<ContactType, String> contacts;
+    private Map<SectionType, AbstractSection> sectionType;
+
+
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -31,9 +35,6 @@ public class Resume {
     public String getFullName() {
         return fullName;
     }
-    public void SectionType(){
-        
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -52,4 +53,14 @@ public class Resume {
     public String toString() {
         return uuid + " " + fullName;
     }
+
+
+    public Map<ContactType, String> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(Map<ContactType, String> contacts) {
+        this.contacts = contacts;
+    }
 }
+
