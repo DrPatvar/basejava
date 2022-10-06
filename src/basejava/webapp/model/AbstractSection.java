@@ -1,4 +1,4 @@
 package basejava.webapp.model;
 
-public class AbstractSection {
+public abstract class AbstractSection {
 }

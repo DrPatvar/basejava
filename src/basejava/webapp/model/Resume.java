@@ -1,5 +1,6 @@
 package basejava.webapp.model;
 
+import java.lang.reflect.MalformedParametersException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -21,7 +22,7 @@ public class Resume {
         this(UUID.randomUUID().toString(), fullName);
     }
 
-    public Resume(String uuid, String fullName) {
+    public Resume(String uuid, String fullName ) {
         Objects.requireNonNull(uuid, "uuid must not be null");
         Objects.requireNonNull(fullName, "fullName must not be null");
         this.uuid = uuid;
@@ -54,13 +55,12 @@ public class Resume {
         return uuid + " " + fullName;
     }
 
-
     public Map<ContactType, String> getContacts() {
         return contacts;
     }
 
-    public void setContacts(Map<ContactType, String> contacts) {
-        this.contacts = contacts;
+    public Map<SectionType, AbstractSection> getSectionType() {
+        return sectionType;
     }
 }
 
