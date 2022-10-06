@@ -1,6 +1,6 @@
 package basejava.webapp.model;
 
-import java.lang.reflect.MalformedParametersException;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -13,8 +13,8 @@ public class Resume {
     // Unique identifier
     private final String uuid;
     private final String fullName;
-    private Map<ContactType, String> contacts;
-    private Map<SectionType, AbstractSection> sectionType;
+    private Map<ContactType, String> contacts = new EnumMap<ContactType, String>(ContactType.class);
+    private Map<SectionType, AbstractSection> sectionType = new EnumMap<SectionType, AbstractSection>(SectionType.class);
 
 
 
@@ -55,12 +55,12 @@ public class Resume {
         return uuid + " " + fullName;
     }
 
-    public Map<ContactType, String> getContacts() {
-        return contacts;
+    public String getContacts( ContactType type) {
+        return  this.contacts.get(type);
     }
 
-    public Map<SectionType, AbstractSection> getSectionType() {
-        return sectionType;
+    public AbstractSection getSectionType(SectionType type) {
+        return this.sectionType.get(type);
     }
 }
 
