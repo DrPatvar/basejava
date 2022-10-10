@@ -30,4 +30,16 @@ public class Organization {
     public int hashCode() {
         return Objects.hash(content, periods, webSite);
     }
+
+    public String getContent() {
+        return content;
+    }
+
+    public List<Period> getPeriods() {
+        return periods;
+    }
+
+    public String getWebSite() {
+        return webSite;
+    }
 }

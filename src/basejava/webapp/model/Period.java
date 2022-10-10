@@ -4,10 +4,10 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Period {
-    private LocalDate startTime;
-    private LocalDate endTime;
-    private String title;
-    private String description;
+    private final LocalDate startTime;
+    private final LocalDate endTime;
+    private final String title;
+    private final String description;
 
     public Period(LocalDate startTime, LocalDate endTime, String title, String description) {
         Objects.requireNonNull(startTime, "startTime is not null");
@@ -33,4 +33,19 @@ public class Period {
         return Objects.hash(startTime, endTime, title, description);
     }
 
+    public LocalDate getStartTime() {
+        return startTime;
+    }
+
+    public LocalDate getEndTime() {
+        return endTime;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

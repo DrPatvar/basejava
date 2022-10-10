@@ -13,8 +13,8 @@ public class Resume {
     // Unique identifier
     private final String uuid;
     private final String fullName;
-    private Map<ContactType, String> contacts = new EnumMap<ContactType, String>(ContactType.class);
-    private Map<SectionType, AbstractSection> sectionType = new EnumMap<SectionType, AbstractSection>(SectionType.class);
+    private final Map<ContactType, String> contacts = new EnumMap<ContactType, String>(ContactType.class);
+    private final Map<SectionType, AbstractSection> sections = new EnumMap<SectionType, AbstractSection>(SectionType.class);
 
 
 
@@ -55,12 +55,12 @@ public class Resume {
         return uuid + " " + fullName;
     }
 
-    public String getContacts( ContactType type) {
-        return  this.contacts.get(type);
+    public Map<ContactType, String> getContacts() {
+        return contacts;
     }
 
-    public AbstractSection getSectionType(SectionType type) {
-        return this.sectionType.get(type);
+    public Map<SectionType, AbstractSection> getSections() {
+        return sections;
     }
 }
 

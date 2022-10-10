@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class ListSection extends  AbstractSection{
-    private List<String> strings;
+    private final List<String> strings;
 
     public ListSection(List<String> strings) {
         Objects.requireNonNull(strings, "strings is not null");

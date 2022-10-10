@@ -3,7 +3,7 @@ package basejava.webapp.model;
 import java.util.Objects;
 
 public class TextSection  extends  AbstractSection{
-    private String content;
+    private final String content;
 
     public TextSection(String content) {
         Objects.requireNonNull(content, "content is not null");
