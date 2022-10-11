@@ -11,10 +11,10 @@ public class ResumeTestData {
 
     public static void main(String[] args) {
         Resume resume = new Resume("uuid1", "Ivan Sh");
-        Period alcatel = new Period(LocalDate.of(1997, Month.DECEMBER, 1),
-                LocalDate.of(2005, Month.JANUARY, 15), "Alcatel", "Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL, ASM).");
-        Period mfti = new Period(LocalDate.of(1984, Month.SEPTEMBER, 23),
-                LocalDate.of(1987, Month.JUNE, 18), "zaochka MFTI", "Закончил с отличием");
+        Period alcatel = new Period(LocalDate.of(1997, 12, 1),
+                LocalDate.of(2005, 01, 15), "Alcatel", "Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL, ASM).");
+        Period mfti = new Period(LocalDate.of(1984, 9, 23),
+                LocalDate.of(1987, 6, 18), "zaochka MFTI", "Закончил с отличием");
         List<Period> alcatelList = new ArrayList<>();
         alcatelList.add(alcatel);
         List<Period> mftiList = new ArrayList<>();
