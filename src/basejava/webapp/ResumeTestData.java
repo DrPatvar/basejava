@@ -9,6 +9,10 @@ import java.util.List;
 
 public class ResumeTestData {
 
+    public void data(String uuid, String fullName){
+
+    }
+
     public static void main(String[] args) {
         Resume resume = new Resume("uuid1", "Ivan Sh");
         Period alcatel = new Period(LocalDate.of(1997, 12, 1),

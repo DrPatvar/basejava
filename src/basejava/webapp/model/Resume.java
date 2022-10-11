@@ -55,12 +55,12 @@ public class Resume {
         return uuid + " " + fullName;
     }
 
-    public Map<ContactType, String> getContacts() {
-        return contacts;
+    public String getContacts(ContactType type ) {
+        return contacts.get(type);
     }
 
-    public Map<SectionType, AbstractSection> getSections() {
-        return sections;
+    public AbstractSection getSections(SectionType sectionType) {
+        return sections.get(sectionType);
     }
 }
 

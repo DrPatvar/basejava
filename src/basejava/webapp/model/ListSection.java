@@ -20,7 +20,7 @@ public class ListSection extends  AbstractSection{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ListSection that = (ListSection) o;
-        return Objects.equals(strings, that.strings);
+        return strings.equals(that.strings);
     }
 
     @Override
