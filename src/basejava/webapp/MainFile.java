@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class MainFile {
-
+    private static int count = 0;
     public void listFile(File dir) {
         if (dir.isDirectory()) {
             File[] list = dir.listFiles();
@@ -17,9 +17,19 @@ public class MainFile {
             }
         }
     }
+    public void countFile(File dir){
+        if (dir.isDirectory()){
+            File[] files = dir.listFiles();
+            for (File file : files
+            ) {
+                count++;
+            }
+        }
+        System.out.println("число файлов  " + count);
+    }
 
     public static void main(String[] args) {
-        File path = new File("./src/basejava/webapp");
+        File path = new File("./src/basejava/webapp/model");
         //"./src/basejava/webapp"
         String filePath = ".\\.gitignore";
         File file = new File(filePath);
@@ -30,7 +40,7 @@ public class MainFile {
         }
         MainFile mainFile = new MainFile();
         mainFile.listFile(path);
-
+        mainFile.countFile(path);
 
     }
 }
