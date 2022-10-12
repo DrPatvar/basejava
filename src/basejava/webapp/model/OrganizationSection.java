@@ -27,4 +27,11 @@ public class OrganizationSection extends AbstractSection{
   public int hashCode() {
     return Objects.hash(organizations);
   }
+
+  @Override
+  public String toString() {
+    return "OrganizationSection{" +
+            "organizations=" + organizations +
+            '}';
+  }
 }

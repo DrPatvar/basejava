@@ -48,4 +48,14 @@ public class Period {
     public String getDescription() {
         return description;
     }
+
+    @Override
+    public String toString() {
+        return "Period{" +
+                "startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

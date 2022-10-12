@@ -42,4 +42,12 @@ public class Organization {
     public String getWebSite() {
         return webSite;
     }
+
+    @Override
+    public String toString() {
+        return "Organization{" +
+                "content='" + content + '\'' +
+                ", webSite='" + webSite + '\'' +
+                '}';
+    }
 }

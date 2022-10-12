@@ -17,12 +17,11 @@ public class Resume {
     private final Map<SectionType, AbstractSection> sections = new EnumMap<SectionType, AbstractSection>(SectionType.class);
 
 
-
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
     }
 
-    public Resume(String uuid, String fullName ) {
+    public Resume(String uuid, String fullName) {
         Objects.requireNonNull(uuid, "uuid must not be null");
         Objects.requireNonNull(fullName, "fullName must not be null");
         this.uuid = uuid;
@@ -35,6 +34,14 @@ public class Resume {
 
     public String getFullName() {
         return fullName;
+    }
+
+    public String getContacts(ContactType type) {
+        return contacts.get(type);
+    }
+
+    public AbstractSection getSections(SectionType sectionType) {
+        return sections.get(sectionType);
     }
 
     @Override
@@ -55,12 +62,6 @@ public class Resume {
         return uuid + " " + fullName;
     }
 
-    public String getContacts(ContactType type ) {
-        return contacts.get(type);
-    }
 
-    public AbstractSection getSections(SectionType sectionType) {
-        return sections.get(sectionType);
-    }
 }
 

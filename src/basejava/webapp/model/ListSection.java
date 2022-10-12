@@ -27,4 +27,11 @@ public class ListSection extends  AbstractSection{
     public int hashCode() {
         return Objects.hash(strings);
     }
+
+    @Override
+    public String toString() {
+        return "ListSection{" +
+                "strings=" + strings +
+                '}';
+    }
 }

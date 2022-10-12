@@ -9,8 +9,10 @@ import java.util.List;
 
 public class ResumeTestData {
 
-    public void data(String uuid, String fullName){
+    public Resume resume (String uuid, String fullName){
+        Resume resume = new Resume("uuid1","TestResume");
 
+        return resume;
     }
 
     public static void main(String[] args) {
@@ -41,7 +43,7 @@ public class ResumeTestData {
         ListSection listSection = new ListSection(archievement);
         TextSection textSection = new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры." );
 
-
+        
     }
 
 
