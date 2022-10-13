@@ -1,11 +1,15 @@
 package basejava.webapp.model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class ListSection extends  AbstractSection{
     private final List<String> strings;
 
+    public ListSection(String... strings){
+        this.strings = Arrays.asList(strings);
+    }
     public ListSection(List<String> strings) {
         Objects.requireNonNull(strings, "strings is not null");
         this.strings = strings;
@@ -30,8 +34,6 @@ public class ListSection extends  AbstractSection{
 
     @Override
     public String toString() {
-        return "ListSection{" +
-                "strings=" + strings +
-                '}';
+        return strings.toString();
     }
 }

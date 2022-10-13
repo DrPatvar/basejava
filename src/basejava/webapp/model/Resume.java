@@ -39,9 +39,15 @@ public class Resume {
     public String getContacts(ContactType type) {
         return contacts.get(type);
     }
+    public void addContact(ContactType type, String text){
+        contacts.put(type,text);
+    }
 
     public AbstractSection getSections(SectionType sectionType) {
         return sections.get(sectionType);
+    }
+    public void addSection (SectionType type, AbstractSection abstractSection){
+        sections.put(type, abstractSection);
     }
 
     @Override

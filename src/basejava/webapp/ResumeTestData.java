@@ -43,7 +43,7 @@ public class ResumeTestData {
         ListSection listSection = new ListSection(archievement);
         TextSection textSection = new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры." );
 
-        
+
     }
 
 
