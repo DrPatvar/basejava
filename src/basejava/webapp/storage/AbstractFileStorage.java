@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
-    private File directory;
-    private File[] listFiles;
+    private final File directory;
+
 
     public AbstractFileStorage(File directory) {
         Objects.requireNonNull(directory, "directory must not be null");
@@ -24,13 +24,17 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         this.directory = directory;
     }
 
-    protected File[] files() {
-        return listFiles = directory.listFiles();
-    }
-
     protected abstract void doWrite(Resume r, File file) throws IOException;
 
-    protected abstract Resume doRead(File file);
+    protected abstract Resume doRead(File file) throws IOException;
+
+    protected File[] getAllFiles() {
+        File[] listFiles = directory.listFiles();
+        if (listFiles == null) {
+            throw new StorageException("IO error", "что то погло не так");
+        }
+        return listFiles;
+    }
 
     @Override
     protected void doSave(Resume r, File file) {
@@ -54,11 +58,20 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void doDelete(File file) {
         file.delete();
+        if(isExist(file)){
+            throw new StorageException("IO error", "file doesn't remove");
+        }
     }
 
     @Override
     public Resume doGet(File file) {
-        return doRead(file);
+        Resume resume = null;
+        try {
+           resume = doRead(file);
+        } catch (IOException e) {
+            throw new StorageException("IO error", file.getName(), e);
+        }
+        return resume;
     }
 
 
@@ -69,18 +82,18 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        for (File file : listFiles
-        ) {
-            file.delete();
+        for (File file: getAllFiles()
+             ) {
+            doDelete(file);
         }
     }
 
     @Override
     public List<Resume> doCopyAll() {
         List<Resume> resumeList = new ArrayList<>();
-        for (File file : listFiles
+        for (File file : getAllFiles()
         ) {
-            resumeList.add(doRead(file));
+            resumeList.add(doGet(file));
         }
         return resumeList;
     }
@@ -88,7 +101,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public int size() {
         int count = 0;
-        for (File file : listFiles
+        for (File file : getAllFiles()
         ) {
             count++;
         }
