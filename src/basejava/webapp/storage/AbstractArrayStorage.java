@@ -2,7 +2,6 @@ package basejava.webapp.storage;
 
 import basejava.webapp.exception.ExistStorageException;
 import basejava.webapp.model.Resume;
-
 import java.util.*;
 
 public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {

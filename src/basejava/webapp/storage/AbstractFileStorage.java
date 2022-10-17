@@ -2,16 +2,15 @@ package basejava.webapp.storage;
 
 import basejava.webapp.exception.StorageException;
 import basejava.webapp.model.Resume;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
     private final File directory;
-
 
     public AbstractFileStorage(File directory) {
         Objects.requireNonNull(directory, "directory must not be null");
@@ -82,8 +81,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        for (File file: getAllFiles()
-             ) {
+        for (File file: getAllFiles()) {
             doDelete(file);
         }
     }
@@ -91,8 +89,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public List<Resume> doCopyAll() {
         List<Resume> resumeList = new ArrayList<>();
-        for (File file : getAllFiles()
-        ) {
+        for (File file : getAllFiles()) {
             resumeList.add(doGet(file));
         }
         return resumeList;
@@ -100,12 +97,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
-        int count = 0;
-        for (File file : getAllFiles()
-        ) {
-            count++;
-        }
-        return count;
+        return getAllFiles().length;
     }
 
     @Override
