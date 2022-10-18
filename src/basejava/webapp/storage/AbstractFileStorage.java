@@ -2,10 +2,10 @@ package basejava.webapp.storage;
 
 import basejava.webapp.exception.StorageException;
 import basejava.webapp.model.Resume;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,7 +41,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
             file.createNewFile();
             doWrite(r, file);
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            throw new StorageException("Couldn`t creat file", file.getName(), e);
         }
     }
 
@@ -50,15 +50,15 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         try {
             doWrite(resume, file);
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            throw new StorageException("File write error", file.getName(), e);
         }
     }
 
     @Override
     protected void doDelete(File file) {
         file.delete();
-        if(isExist(file)){
-            throw new StorageException("IO error", "file doesn't remove");
+        if (isExist(file)) {
+            throw new StorageException("File delete error", file.getName());
         }
     }
 
@@ -66,9 +66,9 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     public Resume doGet(File file) {
         Resume resume = null;
         try {
-           resume = doRead(file);
+            resume = doRead(file);
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            throw new StorageException("File read error", file.getName(), e);
         }
         return resume;
     }
@@ -81,7 +81,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        for (File file: getAllFiles()) {
+        for (File file : getAllFiles()) {
             doDelete(file);
         }
     }
