@@ -5,42 +5,36 @@ import java.io.IOException;
 
 public class MainFile {
     private static int count = 0;
-    public void listFile(File dir) {
-        if (dir.isDirectory()) {
-            File[] list = dir.listFiles();
+
+    public static   void listFile(File dir) {
+        int count = 0;
+       final String level = new String(new char[count]).replace("\0", "  ");
+        File[] list = dir.listFiles();
+        if (list != null) {
             for (File file : list
             ) {
-                if (file.isDirectory()) {
+                if (file.isFile()) {
+                    System.out.println ("File: " + file.getName());
+                } else if (file.isDirectory()) {
+                    System.out.println (level + "Directory: " + file.getName());
                     listFile(file);
+                    count++;
                 }
-                System.out.println(file.getName());
             }
         }
-    }
-    public void countFile(File dir){
-        if (dir.isDirectory()){
-            File[] files = dir.listFiles();
-            for (File file : files
-            ) {
-                count++;
-            }
-        }
-        System.out.println("число файлов  " + count);
     }
 
+
     public static void main(String[] args) {
-        File path = new File("./src/basejava/webapp/model");
-        //"./src/basejava/webapp"
+        File path = new File("./src/");
         String filePath = ".\\.gitignore";
+
         File file = new File(filePath);
         try {
             System.out.println(file.getCanonicalPath());
         } catch (IOException e) {
             throw new RuntimeException("Error", e);
         }
-        MainFile mainFile = new MainFile();
-        mainFile.listFile(path);
-        mainFile.countFile(path);
-
+        listFile(path);
     }
 }

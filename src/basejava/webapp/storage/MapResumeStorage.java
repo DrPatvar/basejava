@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MapResumeStorage extends AbstractStorage<Resume> {
+
     protected HashMap<Object, Resume> hashMap = new HashMap<Object, Resume>();
 
 
@@ -32,7 +33,7 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
 
     @Override
     protected void doUpdate(Resume r, Resume resume) {
-        hashMap.put(r.getUuid(), resume);
+        hashMap.put(r.getUuid(), r);
     }
 
     @Override

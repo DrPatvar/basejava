@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
 public class AbstractStorageTest {
 
     protected Storage storage;
+    protected final static File STORAGE_DIR = new File("C:\\basejava\\storage");
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
@@ -108,7 +110,9 @@ public class AbstractStorageTest {
 
     @Test
     public void update() {
-        Assert.assertSame(RESUME_1, storage.get(RESUME_1.getUuid()));
+        Resume resume = new Resume(UUID_1, "New Name");
+        storage.update(resume);
+        Assert.assertTrue(resume.equals(storage.get(UUID_1)));
     }
 
 
