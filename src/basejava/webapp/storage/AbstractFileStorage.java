@@ -38,7 +38,6 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected void doSave(Resume r, File file) {
         try {
             file.createNewFile();
-
         } catch (IOException e) {
             throw new StorageException("Couldn`t creat file" + file.getAbsolutePath(), file.getName(), e);
         }
