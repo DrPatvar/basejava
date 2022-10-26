@@ -5,10 +5,10 @@ import basejava.webapp.model.Resume;
 
 import java.io.*;
 
-public class ObjectStreamStorage extends AbstractFileStorage {
+public class ObjectStreamFIleStorage extends AbstractFileStorage {
 
 
-    public ObjectStreamStorage(File directory) {
+    public ObjectStreamFIleStorage(File directory) {
         super(directory);
     }
 
