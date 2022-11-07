@@ -1,12 +1,11 @@
-package basejava.webapp.strategy;
+package basejava.webapp.storage.strategy;
 
 import basejava.webapp.exception.StorageException;
 import basejava.webapp.model.Resume;
-import basejava.webapp.strategy.SaveStrategy;
 
 import java.io.*;
 
-public class ObjectStreamSerialization implements SaveStrategy {
+public class ObjectStreamSerialization implements StreamSerializer {
     
 
     @Override
