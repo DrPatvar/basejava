@@ -4,23 +4,34 @@ import basejava.webapp.util.LocalDateAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.Objects;
 
+import static basejava.webapp.util.DateUtil.NOW;
+import static basejava.webapp.util.DateUtil.of;
+
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Period  implements Serializable {
+public class Period implements Serializable {
     private final static long serialVersionUID = 1L;
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
-    private  LocalDate startTime;
+    private LocalDate startTime;
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
-    private  LocalDate endTime;
-    private  String title;
-    private  String description;
+    private LocalDate endTime;
+    private String title;
+    private String description;
 
     public Period() {
+    }
+
+    public Period(int startYear, Month startMonth, String title, String description) {
+        this(of(startYear, startMonth), NOW, title, description);
+    }
+
+    public Period(int startYear, Month startMonth, int endYear, Month endMonth, String title, String description) {
+        this(of(startYear, startMonth), of(endYear, endMonth), title, description);
     }
 
     public Period(LocalDate startTime, LocalDate endTime, String title, String description) {

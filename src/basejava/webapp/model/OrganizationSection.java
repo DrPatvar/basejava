@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class OrganizationSection extends AbstractSection {
+public class OrganizationSection extends Section {
   private List<Organization> organizations;
 
   public OrganizationSection() {

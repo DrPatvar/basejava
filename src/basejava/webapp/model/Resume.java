@@ -20,7 +20,7 @@ public class Resume implements Serializable {
     private String uuid;
     private  String fullName;
     private final Map<ContactType, String> contacts = new EnumMap<ContactType, String>(ContactType.class);
-    private final Map<SectionType, AbstractSection> sections = new EnumMap<SectionType, AbstractSection>(SectionType.class);
+    private final Map<SectionType, Section> sections = new EnumMap<SectionType, Section>(SectionType.class);
 
 
     public Resume() {
@@ -52,11 +52,11 @@ public class Resume implements Serializable {
         contacts.put(type,text);
     }
 
-    public AbstractSection getSections(SectionType sectionType) {
+    public Section getSections(SectionType sectionType) {
         return sections.get(sectionType);
     }
-    public void addSection (SectionType type, AbstractSection abstractSection){
-        sections.put(type, abstractSection);
+    public void addSection (SectionType type, Section section){
+        sections.put(type, section);
     }
 
     @Override

@@ -3,7 +3,7 @@ package basejava.webapp.model;
 import java.util.Objects;
 
 
-public class TextSection extends AbstractSection {
+public class TextSection extends Section {
     private final static long serialVersionUID = 1L;
     private String content;
 
