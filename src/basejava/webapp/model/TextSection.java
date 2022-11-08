@@ -2,9 +2,14 @@ package basejava.webapp.model;
 
 import java.util.Objects;
 
-public class TextSection  extends  AbstractSection{
+
+public class TextSection extends AbstractSection {
     private final static long serialVersionUID = 1L;
-    private final String content;
+    private String content;
+
+
+    public TextSection() {
+    }
 
     public TextSection(String content) {
         Objects.requireNonNull(content, "content is not null");

@@ -4,13 +4,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class ListSection extends  AbstractSection{
-    private final static long serialVersionUID = 1L;
-    private final List<String> strings;
 
-    public ListSection(String... strings){
+public class ListSection extends AbstractSection {
+    private final static long serialVersionUID = 1L;
+    private List<String> strings;
+
+    public ListSection() {
+    }
+
+    public ListSection(String... strings) {
         this.strings = Arrays.asList(strings);
     }
+
     public ListSection(List<String> strings) {
         Objects.requireNonNull(strings, "strings is not null");
         this.strings = strings;

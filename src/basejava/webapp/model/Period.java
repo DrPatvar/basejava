@@ -1,15 +1,27 @@
 package basejava.webapp.model;
 
+import basejava.webapp.util.LocalDateAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Period  implements Serializable {
     private final static long serialVersionUID = 1L;
-    private final LocalDate startTime;
-    private final LocalDate endTime;
-    private final String title;
-    private final String description;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    private  LocalDate startTime;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    private  LocalDate endTime;
+    private  String title;
+    private  String description;
+
+    public Period() {
+    }
 
     public Period(LocalDate startTime, LocalDate endTime, String title, String description) {
         Objects.requireNonNull(startTime, "startTime is not null");
