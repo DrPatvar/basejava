@@ -38,7 +38,6 @@ public class Period implements Serializable {
         Objects.requireNonNull(startTime, "startTime is not null");
         Objects.requireNonNull(endTime, "endTime is not null");
         Objects.requireNonNull(title, "title is not null");
-        Objects.requireNonNull(description, "description is not null");
         this.startTime = startTime;
         this.endTime = endTime;
         this.title = title;

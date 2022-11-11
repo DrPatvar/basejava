@@ -45,16 +45,26 @@ public class Resume implements Serializable {
         return fullName;
     }
 
-    public String getContacts(ContactType type) {
+    public String getContact(ContactType type) {
         return contacts.get(type);
     }
+
+    public Map<ContactType, String> getContacts() {
+        return contacts;
+    }
+
+    public Map<SectionType, Section> getSections() {
+        return sections;
+    }
+
     public void addContact(ContactType type, String text){
         contacts.put(type,text);
     }
 
-    public Section getSections(SectionType sectionType) {
+    public Section getSection(SectionType sectionType) {
         return sections.get(sectionType);
     }
+
     public void addSection (SectionType type, Section section){
         sections.put(type, section);
     }

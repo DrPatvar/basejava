@@ -12,7 +12,7 @@ import org.junit.runners.Suite;
         ObjectFileSerializationTest.class,
         ObjectPathSerializationTest.class,
         XmlFileSerializationTest.class,
-        JsonFileSerializationTest.class
+        JsonPathSerializationTest.class
 })
 public class AllStorageTest {
 }
