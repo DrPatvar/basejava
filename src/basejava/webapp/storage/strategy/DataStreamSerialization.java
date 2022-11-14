@@ -3,10 +3,28 @@ package basejava.webapp.storage.strategy;
 import basejava.webapp.model.*;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 public class DataStreamSerialization implements StreamSerializer {
 
+   private <K> void writerCollection(DataOutputStream dos, Collection<K> collection) throws IOException {
+        dos .writeInt(collection.size());
+       for (K element:collection
+            ) {
+           dos.write((byte[]) element);
+       }
+   }
+   private <K>List<K> readList (DataInputStream dis) throws IOException{
+       int size = dis.readInt();
+       List<K> list = new ArrayList<>(size);
+       for (int i = 0; i <size ; i++) {
+           list.add(dis.read());
+       }
+       return list;
+   }
 
     @Override
     public void doWrite(Resume r, OutputStream os) throws IOException {
@@ -22,12 +40,12 @@ public class DataStreamSerialization implements StreamSerializer {
             } // запись в файл контактов
             //начало записи секции
             Map<SectionType, Section> sections = r.getSections();
-            dos.writeInt(sections.size()); // подсчет кол-ва элементов
+           dos.writeInt(sections.size()); // подсчет кол-ва элементов
             for (Map.Entry<SectionType, Section> entry : sections.entrySet()
             ) {
                 SectionType sectionType = entry.getKey();
                 dos.writeUTF(sectionType.name()); // запись ключа
-                Section section = entry.getValue();
+                Section section = entry.getValue(); //нахождение данных резюме секций, контента
                switch (sectionType){
                    case PERSONAL :
                    case OBJECTIVE :
@@ -35,11 +53,10 @@ public class DataStreamSerialization implements StreamSerializer {
                    break;
                    case ACHIEVEMENT:
                    case QUALIFICATIONS:
-                       dos.writeUTF(String.valueOf(((ListSection)section).getStringList()));
+                      writerCollection(dos,((ListSection)section).getStringList());
                    break;
                    case EXPERIENCE:
                    case EDUCATION:
-                       dos.writeUTF(((OrganizationSection)section).getOrganizations());
                        break;
                }
             }
@@ -76,7 +93,6 @@ public class DataStreamSerialization implements StreamSerializer {
                 return new ListSection(dis.readUTF());
             case EXPERIENCE:
             case EDUCATION:
-
         }
        return null;
     }

@@ -12,7 +12,8 @@ import org.junit.runners.Suite;
         ObjectFileSerializationTest.class,
         ObjectPathSerializationTest.class,
         XmlFileSerializationTest.class,
-        JsonPathSerializationTest.class
+        //JsonPathSerializationTest.class
+        DataPathSerializationTest.class
 })
 public class AllStorageTest {
 }

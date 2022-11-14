@@ -43,7 +43,7 @@ public class AbstractStorageTest {
         RESUME_1.addContact(ContactType.MAIL, "mail@mail.ru");
         RESUME_1.addContact(ContactType.GITHUB, "GitHub.com/People");
         RESUME_1.addSection(SectionType.PERSONAL, new TextSection("Личные качества"));
-        RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("Позиция"));
+       // RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("Позиция"));
        //RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListSection("Достижения", "Достижения_2", "Достижения_3"));
        // RESUME_1.addSection(SectionType.QUALIFICATIONS, new ListSection("Квалификация", "Квалификация_2", "Квалификация_3"));
        /* RESUME_1.addSection(SectionType.EXPERIENCE,
@@ -102,7 +102,7 @@ public class AbstractStorageTest {
 
 
     @Test
-    public void get() {
+    public void get() throws Exception {
         assertGet(RESUME_1);
         assertGet(RESUME_2);
         assertGet(RESUME_3);
@@ -116,7 +116,8 @@ public class AbstractStorageTest {
     @Test
     public void getAllSorted() {
         List<Resume> list = storage.getAllSorted();
-        assertSize(3);
+        Assert.assertEquals(3,list.size());
+        //assertSize(3);
         Assert.assertEquals(list, Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
     }
 
