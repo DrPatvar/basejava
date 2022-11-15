@@ -4,28 +4,28 @@ import basejava.webapp.model.*;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 public class DataStreamSerialization implements StreamSerializer {
 
-   private <K> void writerCollection(DataOutputStream dos, Collection<K> collection) throws IOException {
-        dos .writeInt(collection.size());
-       for (K element:collection
-            ) {
-           dos.write((byte[]) element);
-       }
-   }
-   private <K>List<K> readList (DataInputStream dis) throws IOException{
-       int size = dis.readInt();
-       List<K> list = new ArrayList<>(size);
-       for (int i = 0; i <size ; i++) {
-           list.add(dis.read());
-       }
+   /* private <K> void writerList(DataOutputStream dos, List<K> lists) throws IOException {
+        dos.writeInt(lists.size());
+        for (K list : lists
+        ) {
+            dos.writeUTF(String.valueOf(list));
+        }
+    }
+
+    private <K> List<K> readList(DataInputStream dis) throws IOException {
+        int size = dis.readInt();
+        List<K> list = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            list.add((K) dis.readUTF());
+        }
        return list;
    }
-
+*/
     @Override
     public void doWrite(Resume r, OutputStream os) throws IOException {
         try (DataOutputStream dos = new DataOutputStream(os)) {
@@ -46,19 +46,20 @@ public class DataStreamSerialization implements StreamSerializer {
                 SectionType sectionType = entry.getKey();
                 dos.writeUTF(sectionType.name()); // запись ключа
                 Section section = entry.getValue(); //нахождение данных резюме секций, контента
-               switch (sectionType){
-                   case PERSONAL :
-                   case OBJECTIVE :
-                       dos.writeUTF(((TextSection)section).getContent());
-                   break;
-                   case ACHIEVEMENT:
-                   case QUALIFICATIONS:
-                      writerCollection(dos,((ListSection)section).getStringList());
-                   break;
-                   case EXPERIENCE:
-                   case EDUCATION:
-                       break;
-               }
+                switch (sectionType) {
+                    case PERSONAL:
+                    case OBJECTIVE:
+                        dos.writeUTF(((TextSection) section).getContent());
+                        break;
+                  /*  case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        writerList(dos, ((ListSection) section).getStringList());
+                        break;
+                    case EXPERIENCE:
+                    case EDUCATION:
+
+                        break;*/
+                }
             }
         }
     }
@@ -84,16 +85,17 @@ public class DataStreamSerialization implements StreamSerializer {
     }
 
     private Section readSections(DataInputStream dis, SectionType sectionType) throws IOException {
-        switch (sectionType){
-            case PERSONAL :
+        switch (sectionType) {
+            case PERSONAL:
             case OBJECTIVE:
-                return new TextSection(dis.readUTF()) ;
-            case ACHIEVEMENT:
+                return new TextSection(dis.readUTF());
+            /*case ACHIEVEMENT:
             case QUALIFICATIONS:
-                return new ListSection(dis.readUTF());
+                return new ListSection(readList(dis));
             case EXPERIENCE:
-            case EDUCATION:
+            case EDUCATION:*/
+            default:
+                return null;
         }
-       return null;
     }
 }

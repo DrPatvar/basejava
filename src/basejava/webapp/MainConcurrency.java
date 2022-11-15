@@ -1,37 +1,46 @@
 package basejava.webapp;
 
 public class MainConcurrency {
-    public static final int THREADS_NUMBER = 10000;
-    private static int a = 5;
-    private  static int b =7;
-
-    public static int minus(){
-        return a + sum();
-    }
-    public static int sum(){
-        return b + minus();
-    }
-
 
     public static void main(String[] args) throws InterruptedException {
-
+        final String resource1 = "resource1";
+        final String resource2 = "resource2";
         Thread thread1 = new Thread(new Runnable() {
             @Override
             public void run() {
                 System.out.println(Thread.currentThread().getName() + ", " + Thread.currentThread().getState());
-                minus();
+                synchronized (resource1) {
+                    System.out.println("Thread0: занял ресурс_1");
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    synchronized (resource2) {
+                        System.out.println("Thread0: занял ресурс_2");
+                    }
+                }
             }
         });
         Thread thread2 = new Thread(new Runnable() {
             @Override
             public void run() {
                 System.out.println(Thread.currentThread().getName() + ", " + Thread.currentThread().getState());
-                sum();
+                synchronized (resource2) {
+                    System.out.println("Thread1: занял ресурс_1");
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    synchronized (resource1) {
+                        System.out.println("Thread1: занял ресурс_2");
+                    }
+                }
             }
         });
         thread1.start();
+        //thread1.join();
         thread2.start();
-
     }
-
 }
