@@ -44,8 +44,8 @@ public class AbstractStorageTest {
         RESUME_1.addContact(ContactType.GITHUB, "GitHub.com/People");
         RESUME_1.addSection(SectionType.PERSONAL, new TextSection("Личные качества"));
         RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("Позиция"));
-       // RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListSection("Достижения", "Достижения_2", "Достижения_3"));
-       // RESUME_1.addSection(SectionType.QUALIFICATIONS, new ListSection("Квалификация", "Квалификация_2", "Квалификация_3"));
+        RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListSection("Достижения", "Достижения_2", "Достижения_3"));
+        RESUME_1.addSection(SectionType.QUALIFICATIONS, new ListSection("Квалификация", "Квалификация_2", "Квалификация_3"));
        /* RESUME_1.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Organization("Organization11", "http://Organization11.ru",
@@ -70,9 +70,9 @@ public class AbstractStorageTest {
         */
         RESUME_2.addContact(ContactType.PHONE, "555555");
         RESUME_2.addContact(ContactType.MAIL, "babl@mail.ru");
-        RESUME_2.addSection(SectionType.PERSONAL, new TextSection("Личные качества"));
+       // RESUME_2.addSection(SectionType.PERSONAL, new TextSection("Личные качества"));
         RESUME_2.addSection(SectionType.OBJECTIVE, new TextSection("Позиция"));
-      //  RESUME_2.addSection(SectionType.ACHIEVEMENT, new ListSection("Достижения", "Достижения_2", "Достижения_3"));
+        RESUME_2.addSection(SectionType.ACHIEVEMENT, new ListSection("Достижения", "Достижения_2", "Достижения_3"));
     }
 
     public AbstractStorageTest(Storage storage) {
@@ -115,10 +115,10 @@ public class AbstractStorageTest {
 
     @Test
     public void getAllSorted() {
-        List<Resume> list = storage.getAllSorted();
-        Assert.assertEquals(3,list.size());
-        //assertSize(3);
-        Assert.assertEquals(list, Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
+        List<Resume> result = storage.getAllSorted();
+        List<Resume> expected = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+        Assert.assertEquals(3,result.size());
+        Assert.assertEquals(expected, result );
     }
 
     @Test

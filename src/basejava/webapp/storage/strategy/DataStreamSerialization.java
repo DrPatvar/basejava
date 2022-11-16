@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class DataStreamSerialization implements StreamSerializer {
 
-   /* private <K> void writerList(DataOutputStream dos, List<K> lists) throws IOException {
+    private <K> void writerList(DataOutputStream dos, List<K> lists) throws IOException {
         dos.writeInt(lists.size());
         for (K list : lists
         ) {
@@ -25,7 +25,6 @@ public class DataStreamSerialization implements StreamSerializer {
         }
        return list;
    }
-*/
     @Override
     public void doWrite(Resume r, OutputStream os) throws IOException {
         try (DataOutputStream dos = new DataOutputStream(os)) {
@@ -40,7 +39,7 @@ public class DataStreamSerialization implements StreamSerializer {
             } // запись в файл контактов
             //начало записи секции
             Map<SectionType, Section> sections = r.getSections();
-           dos.writeInt(sections.size()); // подсчет кол-ва элементов
+            dos.writeInt(sections.size()); // подсчет кол-ва элементов
             for (Map.Entry<SectionType, Section> entry : sections.entrySet()
             ) {
                 SectionType sectionType = entry.getKey();
@@ -51,14 +50,13 @@ public class DataStreamSerialization implements StreamSerializer {
                     case OBJECTIVE:
                         dos.writeUTF(((TextSection) section).getContent());
                         break;
-                  /*  case ACHIEVEMENT:
+                    case ACHIEVEMENT:
                     case QUALIFICATIONS:
                         writerList(dos, ((ListSection) section).getStringList());
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
-
-                        break;*/
+                        break;
                 }
             }
         }
@@ -76,7 +74,7 @@ public class DataStreamSerialization implements StreamSerializer {
             }
           //чтение  в Map<SectionType, Section>
             int count = dis.readInt();
-            for (int i = size; i <count ; i++) {
+            for (int i = 0; i <count ; i++) {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 resume.addSection(sectionType,readSections(dis,sectionType));
             }
@@ -89,11 +87,11 @@ public class DataStreamSerialization implements StreamSerializer {
             case PERSONAL:
             case OBJECTIVE:
                 return new TextSection(dis.readUTF());
-            /*case ACHIEVEMENT:
+            case ACHIEVEMENT:
             case QUALIFICATIONS:
                 return new ListSection(readList(dis));
             case EXPERIENCE:
-            case EDUCATION:*/
+            case EDUCATION:
             default:
                 return null;
         }
