@@ -40,7 +40,6 @@ public class MainConcurrency {
             }
         });
         thread1.start();
-        //thread1.join();
         thread2.start();
     }
 }
