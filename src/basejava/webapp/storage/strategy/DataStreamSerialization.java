@@ -3,28 +3,77 @@ package basejava.webapp.storage.strategy;
 import basejava.webapp.model.*;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class DataStreamSerialization implements StreamSerializer {
 
-    private <K> void writerList(DataOutputStream dos, List<K> lists) throws IOException {
+    private <V> void writerList(DataOutputStream dos, List<V> lists) throws IOException {
         dos.writeInt(lists.size());
-        for (K list : lists
+        for (V list : lists
         ) {
             dos.writeUTF(String.valueOf(list));
         }
     }
 
-    private <K> List<K> readList(DataInputStream dis) throws IOException {
+    private <V> List<V> readList(DataInputStream dis) throws IOException {
         int size = dis.readInt();
-        List<K> list = new ArrayList<>(size);
+        List<V> list = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            list.add((K) dis.readUTF());
+            list.add((V) dis.readUTF());
         }
-       return list;
-   }
+        return list;
+    }
+
+    private void writeDate(DataOutputStream dos, LocalDate localDate) throws IOException {
+        dos.writeInt(localDate.getYear());
+        dos.writeInt(localDate.getMonthValue());
+    }
+
+    private LocalDate readDate(DataInputStream dis) throws IOException {
+        return LocalDate.of(dis.readInt(), dis.readInt(), 1);
+    }
+
+    private void writePeriod(DataOutputStream dos, List<Period> periods) throws IOException {
+        dos.writeInt(periods.size());
+        for (Period period : periods
+        ) {
+            writeDate(dos, period.getStartTime());
+            writeDate(dos, period.getEndTime());
+            dos.writeUTF(period.getTitle());
+            dos.writeUTF(period.getDescription());
+        }
+    }
+
+    private void writeOrg(DataOutputStream dos, List<Organization> organizations) throws IOException {
+        dos.writeInt(organizations.size());
+        for (Organization org : organizations) {
+            dos.writeUTF(org.getContent());
+            dos.writeUTF(org.getWebSite());
+            writePeriod(dos, org.getPeriods());
+        }
+    }
+
+    private List<Organization> readOrg(DataInputStream dis) throws IOException {
+        int size = dis.readInt();
+        List<Organization> list = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            list.add(new Organization(dis.readUTF(), dis.readUTF(), readPeriod(dis)));
+        }
+        return list;
+    }
+
+    private List<Period> readPeriod(DataInputStream dis) throws IOException {
+        int size = dis.readInt();
+        List<Period> periods = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            periods.add(new Period(readDate(dis), readDate(dis), dis.readUTF(), dis.readUTF()));
+        }
+        return periods;
+    }
+
     @Override
     public void doWrite(Resume r, OutputStream os) throws IOException {
         try (DataOutputStream dos = new DataOutputStream(os)) {
@@ -36,15 +85,14 @@ public class DataStreamSerialization implements StreamSerializer {
             ) {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
-            } // запись в файл контактов
-            //начало записи секции
+            }
             Map<SectionType, Section> sections = r.getSections();
-            dos.writeInt(sections.size()); // подсчет кол-ва элементов
+            dos.writeInt(sections.size());
             for (Map.Entry<SectionType, Section> entry : sections.entrySet()
             ) {
                 SectionType sectionType = entry.getKey();
-                dos.writeUTF(sectionType.name()); // запись ключа
-                Section section = entry.getValue(); //нахождение данных резюме секций, контента
+                dos.writeUTF(sectionType.name());
+                Section section = entry.getValue();
                 switch (sectionType) {
                     case PERSONAL:
                     case OBJECTIVE:
@@ -56,6 +104,8 @@ public class DataStreamSerialization implements StreamSerializer {
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
+                        List<Organization> listOrg = (((OrganizationSection) section).getOrganizations());
+                        writeOrg(dos, listOrg);
                         break;
                 }
             }
@@ -72,7 +122,6 @@ public class DataStreamSerialization implements StreamSerializer {
             for (int i = 0; i < size; i++) {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
-          //чтение  в Map<SectionType, Section>
             int count = dis.readInt();
             for (int i = 0; i <count ; i++) {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
@@ -92,6 +141,7 @@ public class DataStreamSerialization implements StreamSerializer {
                 return new ListSection(readList(dis));
             case EXPERIENCE:
             case EDUCATION:
+                return new OrganizationSection(readOrg(dis));
             default:
                 return null;
         }

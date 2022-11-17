@@ -24,7 +24,7 @@ public class Organization implements Serializable {
         this.periods = Arrays.asList(periods);
     }
 
-    public Organization(String content, List<Period> periods, String webSite) {
+    public Organization(String content,  String webSite, List<Period> periods) {
         Objects.requireNonNull(content, "content is not null");
         Objects.requireNonNull(periods, "periods is not null");
         Objects.requireNonNull(webSite, "website is not null");

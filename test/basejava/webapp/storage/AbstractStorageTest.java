@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,7 +47,7 @@ public class AbstractStorageTest {
         RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("Позиция"));
         RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListSection("Достижения", "Достижения_2", "Достижения_3"));
         RESUME_1.addSection(SectionType.QUALIFICATIONS, new ListSection("Квалификация", "Квалификация_2", "Квалификация_3"));
-       /* RESUME_1.addSection(SectionType.EXPERIENCE,
+        RESUME_1.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Organization("Organization11", "http://Organization11.ru",
                                 new Period(2005, Month.JANUARY, "position1", "content1"),
@@ -56,21 +57,17 @@ public class AbstractStorageTest {
                         new Organization("Institute", "www.ru",
                                 new Period(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", "test"),
                                 new Period(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet")),
-                        new Organization("Organization12", "http://Organization12.ru")));*/
-        /*RESUME_1.addSection(SectionType.EXPERIENCE, new OrganizationSection(
+                        new Organization("Organization12", "http://Organization12.ru")));
+        RESUME_1.addSection(SectionType.EXPERIENCE, new OrganizationSection(
                 new Organization("Content", "www.Alcatel.ru",
-                        new Period(LocalDate.of(1997, Month.JANUARY,15),
-                                LocalDate.of(1999, Month.SEPTEMBER,10),"title","text"))));
+                        new Period(1997, Month.JANUARY, 1999, Month.SEPTEMBER,"title","text"))));
         RESUME_1.addSection(SectionType.EDUCATION, new OrganizationSection(
                 new Organization("University", "www.Unity.ru",
-                        new Period(LocalDate.of(1987, Month.SEPTEMBER,01),
-                                LocalDate.of(1993,Month.JULY,1), "St.Petersnurg","ingeneer"),
-                        new Period(LocalDate.of(1993, Month.SEPTEMBER,5),
-                                LocalDate.of(1996, Month.JULY,14), "St. Petersburg","Aspirant"))));
-        */
+                        new Period(1987, Month.SEPTEMBER,1993,Month.JULY, "St.Petersnurg","ingeneer"),
+                        new Period(1993, Month.SEPTEMBER,1996, Month.JULY, "St. Petersburg","Aspirant"))));
         RESUME_2.addContact(ContactType.PHONE, "555555");
         RESUME_2.addContact(ContactType.MAIL, "babl@mail.ru");
-       // RESUME_2.addSection(SectionType.PERSONAL, new TextSection("Личные качества"));
+        RESUME_2.addSection(SectionType.PERSONAL, new TextSection("Личные качества"));
         RESUME_2.addSection(SectionType.OBJECTIVE, new TextSection("Позиция"));
         RESUME_2.addSection(SectionType.ACHIEVEMENT, new ListSection("Достижения", "Достижения_2", "Достижения_3"));
     }
