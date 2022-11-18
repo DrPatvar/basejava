@@ -61,15 +61,14 @@ public class DataStreamSerialization implements StreamSerializer {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
-            int size = dis.readInt();
-            for (int i = 0; i < size; i++) {
-                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
-            int count = dis.readInt();
-            for (int i = 0; i <count ; i++) {
+
+            readCollection(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+
+            readCollection(dis, () -> {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
-                resume.addSection(sectionType,readSections(dis,sectionType));
-            }
+                resume.addSection(sectionType, readSections(dis, sectionType));
+            });
+
             return resume;
         }
     }
@@ -81,7 +80,7 @@ public class DataStreamSerialization implements StreamSerializer {
                 return new TextSection(dis.readUTF());
             case ACHIEVEMENT:
             case QUALIFICATIONS:
-                return new ListSection(readList(dis, dis::readUTF));
+                return new ListSection(readList(dis, () -> dis.readUTF()));
             case EXPERIENCE:
             case EDUCATION:
                 return new OrganizationSection(readList(dis, () -> new Organization(
@@ -93,12 +92,23 @@ public class DataStreamSerialization implements StreamSerializer {
         }
     }
 
+    private interface addCollecton {
+        void add() throws IOException;
+    }
+
     private interface writeElement<V> {
         void write(V v) throws IOException;
     }
 
     private interface readerElement<V> {
         V read() throws IOException;
+    }
+
+    private void readCollection(DataInputStream dis, addCollecton addCollecton) throws IOException {
+        int size = dis.readInt();
+        for (int i = 0; i < size; i++) {
+            addCollecton.add();
+        }
     }
 
     private <V> void writeCollection(DataOutputStream dos, Collection<V> collection, writeElement<V> writer) throws IOException {
