@@ -20,7 +20,7 @@ public class Organization implements Serializable {
 
     public Organization(String content, String webSite, Period... periods) {
         this.content = content;
-        this.webSite = webSite;
+        this.webSite = webSite == null ? "": webSite;
         this.periods = Arrays.asList(periods);
     }
 

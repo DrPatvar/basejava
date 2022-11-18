@@ -41,7 +41,7 @@ public class Period implements Serializable {
         this.startTime = startTime;
         this.endTime = endTime;
         this.title = title;
-        this.description = description;
+        this.description = description == null ? " ": description;
     }
 
     @Override
