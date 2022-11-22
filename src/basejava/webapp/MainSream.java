@@ -2,6 +2,7 @@ package basejava.webapp;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -36,13 +37,10 @@ public class MainSream {
     }
     public static void main(String[] args) {
         List<Integer> integers = new ArrayList<>();
-        integers.add(1);
-        integers.add(2);
-        integers.add(3);
+        Collections.addAll(integers, 1, 2, 3, 1);
 
         MainSream mainSream = new MainSream();
 
-        mainSream.minValue(mainSream.array);
         System.out.println("мин число из: " + mainSream.minValue(mainSream.array));
         System.out.println( mainSream.oddOrEven(integers));
     }
