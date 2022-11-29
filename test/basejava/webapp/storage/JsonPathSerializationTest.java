@@ -5,6 +5,6 @@ import basejava.webapp.storage.strategy.JsonStreamSerializer;
 public class JsonPathSerializationTest extends AbstractStorageTest {
 
     public JsonPathSerializationTest() {
-        super(new PathStorage(STORAGE_DIR, new JsonStreamSerializer()));
+        super(new PathStorage(STORAGE_DIR.getAbsolutePath(), new JsonStreamSerializer()));
     }
 }
