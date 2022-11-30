@@ -29,7 +29,7 @@ public class FileStorage extends AbstractStorage<File> {
     protected File[] getAllFiles() {
         File[] listFiles = directory.listFiles();
         if (listFiles == null) {
-            throw new StorageException("Error read file from a directory", null);
+            throw new StorageException("Error read file from a directory");
         }
         return listFiles;
     }
