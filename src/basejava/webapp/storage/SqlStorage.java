@@ -88,7 +88,7 @@ public class SqlStorage implements Storage {
             }
             String uuid = rs.getString("uuid");
             String fullName = rs.getString("full_name");
-            
+
              list.add(new Resume(uuid, fullName));
 
         } catch (SQLException e) {
@@ -99,6 +99,15 @@ public class SqlStorage implements Storage {
 
     @Override
     public int size() {
-        return 0;
+        int count = 0;
+        try (Connection conn = connectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume")) {
+            ResultSet rs = ps.executeQuery();
+            rs.last();
+            count = rs.getRow();
+        } catch (SQLException e) {
+            throw new StorageException(e);
+        }
+        return count;
     }
 }
