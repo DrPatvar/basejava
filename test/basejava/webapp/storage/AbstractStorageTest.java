@@ -39,7 +39,7 @@ public class AbstractStorageTest {
         RESUME_3 = new Resume(UUID_3, FULLNAME3);
         RESUME_4 = new Resume(UUID_4, FULLNAME4);
 
-        RESUME_1.addContact(ContactType.PHONE, "323232");
+        /*RESUME_1.addContact(ContactType.PHONE, "323232");
         RESUME_1.addContact(ContactType.MAIL, "mail@mail.ru");
         RESUME_1.addContact(ContactType.GITHUB, "GitHub.com/People");
         RESUME_1.addSection(SectionType.PERSONAL, new TextSection("Личные качества"));
@@ -69,7 +69,7 @@ public class AbstractStorageTest {
         RESUME_2.addSection(SectionType.PERSONAL, new TextSection("Личные качества"));
         RESUME_2.addSection(SectionType.OBJECTIVE, new TextSection("Позиция"));
         RESUME_2.addSection(SectionType.ACHIEVEMENT, new ListSection("Достижения", "Достижения_2", "Достижения_3"));
-    }
+    */}
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;

@@ -8,8 +8,10 @@ import basejava.webapp.sql.ConnectionFactory;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class SqlStorage implements Storage {
+    private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
     private final ConnectionFactory connectionFactory;
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
@@ -18,6 +20,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public void clear() {
+        LOG.info("CLEAR");
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("DELETE FROM resume")) {
             ps.execute();
@@ -28,6 +31,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
+        LOG.info("GET");
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume r WHERE r.uuid = ?")) {
             ps.setString(1, uuid);
@@ -44,6 +48,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public void update(Resume r) {
+        LOG.info("UPDATE");
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO resume (full_name) VALUES (?)")) {
             ps.setString(2, r.getFullName());
@@ -56,6 +61,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public void save(Resume r) {
+        LOG.info("SAVE");
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO resume (uuid, full_name) VALUES (?,?)")) {
             ps.setString(1, r.getUuid());
@@ -68,6 +74,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public void delete(String uuid) {
+        LOG.info("DELETE");
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("DELETE FROM resume WHERE uuid = ?")) {
             ps.setString(1, uuid);
@@ -79,6 +86,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
+        LOG.info("GETALLSORTED");
         List<Resume> list = new ArrayList<>();
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume ")) {
@@ -99,6 +107,7 @@ public class SqlStorage implements Storage {
 
     @Override
     public int size() {
+        LOG.info("SIZE");
         int count = 0;
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume")) {
