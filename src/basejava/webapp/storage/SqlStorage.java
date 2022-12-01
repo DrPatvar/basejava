@@ -6,6 +6,7 @@ import basejava.webapp.model.Resume;
 import basejava.webapp.sql.ConnectionFactory;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SqlStorage implements Storage {
@@ -28,7 +29,7 @@ public class SqlStorage implements Storage {
     @Override
     public Resume get(String uuid) {
         try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume r WHERE r.uuid=?")) {
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume r WHERE r.uuid = ?")) {
             ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
@@ -43,6 +44,13 @@ public class SqlStorage implements Storage {
 
     @Override
     public void update(Resume r) {
+        try (Connection conn = connectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO resume (full_name) VALUES (?)")) {
+            ps.setString(2, r.getFullName());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new StorageException(e);
+        }
 
     }
 
@@ -60,12 +68,33 @@ public class SqlStorage implements Storage {
 
     @Override
     public void delete(String uuid) {
-
+        try (Connection conn = connectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement("DELETE FROM resume WHERE uuid = ?")) {
+            ps.setString(1, uuid);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new StorageException(e);
+        }
     }
 
     @Override
     public List<Resume> getAllSorted() {
-        return null;
+        List<Resume> list = new ArrayList<>();
+        try (Connection conn = connectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume ")) {
+            ResultSet rs = ps.executeQuery();
+            if (!rs.next()) {
+                throw new NotExistStorageException("Нет элементов");
+            }
+            String uuid = rs.getString("uuid");
+            String fullName = rs.getString("full_name");
+            
+             list.add(new Resume(uuid, fullName));
+
+        } catch (SQLException e) {
+            throw new StorageException(e);
+        }
+        return list;
     }
 
     @Override
