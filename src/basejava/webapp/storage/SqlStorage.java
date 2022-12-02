@@ -59,10 +59,10 @@ public class SqlStorage implements Storage {
              PreparedStatement ps = conn.prepareStatement("UPDATE  resume SET full_name = ?")) {
              ps.setString(2, r.getFullName());
              ps.executeUpdate();
-             ResultSet rs = ps.executeQuery();
+             /*ResultSet rs = ps.executeQuery();
              if(rs.next()){
                  throw new NotExistStorageException(r.getUuid());
-             }
+             }*/
         } catch (SQLException e) {
             throw new StorageException(e);
         }
@@ -89,10 +89,10 @@ public class SqlStorage implements Storage {
              PreparedStatement ps = conn.prepareStatement("DELETE FROM resume WHERE uuid = ?")) {
             ps.setString(1, uuid);
             ps.executeUpdate();
-            ResultSet rs = ps.executeQuery();
+           /* ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 throw new NotExistStorageException(uuid);
-            }
+            }*/
         } catch (SQLException e) {
             throw new StorageException(e);
         }
@@ -105,9 +105,9 @@ public class SqlStorage implements Storage {
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume ")) {
             ResultSet rs = ps.executeQuery();
-            if (!rs.next()) {
+            /*if (!rs.next()) {
                 throw new NotExistStorageException("Нет элементов");
-            }
+            }*/
             String uuid = rs.getString("uuid");
             String fullName = rs.getString("full_name");
              list.add(new Resume(uuid, fullName));
@@ -122,10 +122,11 @@ public class SqlStorage implements Storage {
         LOG.info("SIZE");
         int count = 0;
         try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT count(*) FROM resume")) {
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume")) {
             ResultSet rs = ps.executeQuery();
-            rs.next();
-            count = rs.getInt("count(*)");
+            while (rs.next()){
+             count++;
+            }
         } catch (SQLException e) {
             throw new StorageException(e);
         }
