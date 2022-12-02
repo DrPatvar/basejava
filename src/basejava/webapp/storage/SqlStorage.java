@@ -16,7 +16,12 @@ public class SqlStorage implements Storage {
     private final ConnectionFactory connectionFactory;
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
-        connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+        connectionFactory = new ConnectionFactory() {
+            @Override
+            public Connection getConnection() throws SQLException {
+                return DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            }
+        };
     }
 
     @Override
@@ -71,10 +76,7 @@ public class SqlStorage implements Storage {
             ps.setString(1, r.getUuid());
             ps.setString(2, r.getFullName());
             ps.execute();
-            ResultSet rs = ps.executeQuery();
-            if(!rs.next()){
-                throw new ExistStorageException(r.getUuid());
-            }
+
         } catch (SQLException e) {
             throw new StorageException(e);
         }
