@@ -28,7 +28,7 @@ public class SqlStorage implements Storage {
     public void clear() {
         LOG.info("CLEAR");
         try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("DELETE FROM resume")) {
+             PreparedStatement ps = conn.prepareStatement("DELETE  FROM resume")) {
             ps.execute();
         } catch (SQLException e) {
             throw new StorageException(e);
@@ -46,7 +46,6 @@ public class SqlStorage implements Storage {
                 throw new NotExistStorageException(uuid);
             }
             return new Resume(uuid, rs.getString("full_name"));
-
         } catch (SQLException e) {
             throw new StorageException(e);
         }
@@ -57,7 +56,7 @@ public class SqlStorage implements Storage {
         LOG.info("UPDATE");
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("UPDATE  resume SET full_name = ?")) {
-             ps.setString(2, r.getFullName());
+            ps.setString(2, r.getFullName());
              ps.executeUpdate();
              /*ResultSet rs = ps.executeQuery();
              if(rs.next()){
@@ -73,9 +72,11 @@ public class SqlStorage implements Storage {
         LOG.info("SAVE");
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO resume (uuid, full_name) VALUES (?,?)")) {
-            ps.setString(1, r.getUuid());
-            ps.setString(2, r.getFullName());
-            ps.execute();
+
+                 ps.setString(1, r.getUuid());
+                 ps.setString(2, r.getFullName());
+                 ps.execute();
+
 
         } catch (SQLException e) {
             throw new StorageException(e);
@@ -105,12 +106,11 @@ public class SqlStorage implements Storage {
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume ")) {
             ResultSet rs = ps.executeQuery();
-            /*if (!rs.next()) {
-                throw new NotExistStorageException("Нет элементов");
-            }*/
-            String uuid = rs.getString("uuid");
-            String fullName = rs.getString("full_name");
-             list.add(new Resume(uuid, fullName));
+            while (rs.next()){
+                String uuid = rs.getString("uuid").trim();
+                String fullName = rs.getString("full_name");
+                list.add(new Resume(uuid, fullName));
+            }
         } catch (SQLException e) {
             throw new StorageException(e);
         }
