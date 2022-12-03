@@ -8,6 +8,8 @@ import basejava.webapp.sql.ConnectionFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -55,13 +57,13 @@ public class SqlStorage implements Storage {
     public void update(Resume r) {
         LOG.info("UPDATE");
         try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("UPDATE  resume SET full_name = ?")) {
-            ps.setString(2, r.getFullName());
-             ps.executeUpdate();
-             /*ResultSet rs = ps.executeQuery();
-             if(rs.next()){
-                 throw new NotExistStorageException(r.getUuid());
-             }*/
+             PreparedStatement ps = conn.prepareStatement("UPDATE  resume  SET  full_name = ?")) {
+            ps.setString(1, r.getFullName());
+            ps.executeUpdate();
+            /*ResultSet rs = ps.executeQuery();
+            if (!rs.next()){
+                throw new NotExistStorageException(r.getUuid());
+            }*/
         } catch (SQLException e) {
             throw new StorageException(e);
         }
@@ -72,12 +74,9 @@ public class SqlStorage implements Storage {
         LOG.info("SAVE");
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO resume (uuid, full_name) VALUES (?,?)")) {
-
                  ps.setString(1, r.getUuid());
                  ps.setString(2, r.getFullName());
                  ps.execute();
-
-
         } catch (SQLException e) {
             throw new StorageException(e);
         }
@@ -111,6 +110,7 @@ public class SqlStorage implements Storage {
                 String fullName = rs.getString("full_name");
                 list.add(new Resume(uuid, fullName));
             }
+            list.sort(Comparator.comparing(Resume::getUuid));
         } catch (SQLException e) {
             throw new StorageException(e);
         }
