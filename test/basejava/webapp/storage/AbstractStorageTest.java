@@ -3,13 +3,12 @@ package basejava.webapp.storage;
 import basejava.webapp.Config;
 import basejava.webapp.exception.ExistStorageException;
 import basejava.webapp.exception.NotExistStorageException;
-import basejava.webapp.model.*;
+import basejava.webapp.model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -82,6 +81,7 @@ public class AbstractStorageTest {
         storage.save(RESUME_1);
         storage.save(RESUME_2);
         storage.save(RESUME_3);
+        //storage.save(RESUME_1);
     }
 
     public void assertSize(int expectedSize) {
@@ -128,7 +128,7 @@ public class AbstractStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void updateNotExist() {
-        storage.update(new Resume(UUID_NOT_EXIST, ""));
+        storage.get("dummy");
     }
 
     @Test
@@ -140,7 +140,7 @@ public class AbstractStorageTest {
 
     @Test(expected = ExistStorageException.class)
     public void saveExist() {
-        storage.save(new Resume(UUID_1, FULLNAME1));
+        storage.save(RESUME_1);
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -148,6 +148,10 @@ public class AbstractStorageTest {
         storage.delete(UUID_1);
         assertSize(2);
         assertGet(RESUME_1);
+    }
+    @Test(expected = NotExistStorageException.class)
+    public void deleteNotExist() throws Exception{
+        storage.delete("dummy");
     }
 
     @Test
