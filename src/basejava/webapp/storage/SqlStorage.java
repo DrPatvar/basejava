@@ -1,8 +1,6 @@
 package basejava.webapp.storage;
 
-import basejava.webapp.exception.ExistStorageException;
 import basejava.webapp.exception.NotExistStorageException;
-import basejava.webapp.exception.StorageException;
 import basejava.webapp.model.Resume;
 import basejava.webapp.sql.SqlHelper;
 
@@ -35,72 +33,61 @@ public class SqlStorage implements Storage {
     @Override
     public void clear() {
         LOG.info("CLEAR");
-        sqlHelper.sqlException(clear, new SqlHelper.BlockCode() {
-               @Override
-               public PreparedStatement execute(PreparedStatement ps) throws SQLException {
-                   ps.execute();
-                   return null;
-               }
-           });
+        sqlHelper.sqlException(clear, ps -> {
+            ps.execute();
+            return null;
+        });
     }
 
     @Override
     public Resume get(String uuid) {
         LOG.info("GET");
-        try (PreparedStatement ps = sqlHelper.getPs(sqlHelper.getConnection(), get)) {
+       return sqlHelper.sqlException(get, ps -> {
             ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
                 throw new NotExistStorageException(uuid);
             }
             return new Resume(uuid, rs.getString("full_name"));
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
+        });
     }
 
     @Override
     public void save(Resume r) {
         LOG.info("SAVE");
-        try (PreparedStatement ps = sqlHelper.getPs(sqlHelper.getConnection(), save)) {
+        sqlHelper.sqlException(save, ps -> {
             ps.setString(1, r.getUuid());
             ps.setString(2, r.getFullName());
             ps.executeUpdate();
-        } catch (SQLException e) {
-             if (e.getErrorCode() == 0){
-                 throw new ExistStorageException(r.getUuid());
-             }
-                throw new StorageException(e);
-        }
+            return null;
+        });
     }
 
     @Override
     public void update(Resume r) {
         LOG.info("UPDATE");
-        try (PreparedStatement ps = sqlHelper.getPs(sqlHelper.getConnection(), update)) {
+        sqlHelper.sqlException(update, ps -> {
             ps.setString(1, r.getFullName());
-           isNotExist(ps,r.getUuid());
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
+            isNotExist(ps, r.getUuid());
+            return null;
+        });
     }
 
     @Override
     public void delete(String uuid) {
         LOG.info("DELETE");
-        try (PreparedStatement ps = sqlHelper.getPs(sqlHelper.getConnection(), delete)) {
+        sqlHelper.sqlException(delete, ps -> {
             ps.setString(1, uuid);
-            isNotExist(ps,uuid);
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
+            isNotExist(ps, uuid);
+            return null;
+        });
     }
 
     @Override
     public List<Resume> getAllSorted() {
         LOG.info("GETALLSORTED");
         List<Resume> list = new ArrayList<>();
-        try (PreparedStatement ps = sqlHelper.getPs(sqlHelper.getConnection(), getAll)) {
+       return sqlHelper.sqlException(getAll, ps -> {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String uuid = rs.getString("uuid").trim();
@@ -108,25 +95,22 @@ public class SqlStorage implements Storage {
                 list.add(new Resume(uuid, fullName));
             }
             list.sort(Comparator.comparing(Resume::getUuid));
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
-        return list;
+            return list;
+        });
     }
 
     @Override
     public int size() {
         LOG.info("SIZE");
-        int count = 0;
-        try (PreparedStatement ps = sqlHelper.getPs(sqlHelper.getConnection(), counts)) {
+        final int[] count = {0};
+       return sqlHelper.sqlException(counts, ps -> {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                count = rs.getInt(1);
+                count[0] = rs.getInt(1);
             }
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
-        return count;
+            return count[0];
+        });
+
     }
 
     public void isNotExist(PreparedStatement ps, String uuid) throws SQLException{
