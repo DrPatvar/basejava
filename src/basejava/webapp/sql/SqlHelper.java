@@ -13,6 +13,7 @@ public class SqlHelper {
     public SqlHelper(String dbUrl, String dbUser, String dbPassword) {
         connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
     }
+
     public Connection getConnection () throws SQLException {
        Connection conn = connectionFactory.getConnection();
             return conn;

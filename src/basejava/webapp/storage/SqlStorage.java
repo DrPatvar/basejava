@@ -40,18 +40,17 @@ public class SqlStorage implements Storage {
     @Override
     public void clear() {
         LOG.info("CLEAR");
-        try {
+       /* try {
             sqlHelper.getPs(sqlHelper.getConnection(), clear).execute();
         } catch (SQLException e) {
+        }*/
 
-        }
-
-        /*try (Connection conn = connectionFactory.getConnection();
+        try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement(clear)) {
             ps.execute();
         } catch (SQLException e) {
             throw new StorageException(e);
-        }*/
+        }
     }
 
     @Override
@@ -77,14 +76,12 @@ public class SqlStorage implements Storage {
              PreparedStatement ps = conn.prepareStatement(save)) {
             ps.setString(1, r.getUuid());
             ps.setString(2, r.getFullName());
-            if (ps.executeUpdate() == 0) {
-                throw new ExistStorageException(r.getUuid());
-            }
-        } catch (StorageException  | SQLException e) {
-            if (e instanceof StorageException){
+            ps.executeUpdate();
+        } catch (SQLException e) {
+             if (e.getErrorCode() == 0){
+                 throw new ExistStorageException(r.getUuid());
+             }
                 throw new StorageException(e);
-            }
-            throw new ExistStorageException(r.getUuid());
         }
     }
 
