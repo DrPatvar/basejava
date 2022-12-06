@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class SqlHelper {
+    private  Connection conn = null;
+    private PreparedStatement ps = null;
     private final ConnectionFactory connectionFactory;
 
     public SqlHelper(String dbUrl, String dbUser, String dbPassword) {
@@ -15,16 +17,22 @@ public class SqlHelper {
     }
 
     public Connection getConnection () throws SQLException {
-       Connection conn = connectionFactory.getConnection();
+       conn = connectionFactory.getConnection();
             return conn;
     }
 
     public PreparedStatement getPs(Connection connection, String sql)throws SQLException {
-      PreparedStatement ps = getConnection().prepareStatement(sql);
+         ps = getConnection().prepareStatement(sql);
         return ps;
     }
-    public void exception(SQLException e){
-      throw new StorageException(e);
+    public void sqlException (Connection conn, String sql ){
+      try(PreparedStatement preparedStatement=  getPs(getConnection(),
+              sql)){
+
+      }catch (SQLException e){
+          throw new StorageException(e);
+      }
     }
+
 
 }

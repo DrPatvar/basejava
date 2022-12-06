@@ -18,6 +18,7 @@ public class SqlStorage implements Storage {
     private final ConnectionFactory connectionFactory;
     private final SqlHelper sqlHelper;
 
+
     private  String clear = "DELETE  FROM resume";
     private String get = "SELECT * FROM resume r WHERE r.uuid = ?";
     private  String save = "INSERT INTO resume (uuid, full_name) VALUES (?,?)";
@@ -40,24 +41,17 @@ public class SqlStorage implements Storage {
     @Override
     public void clear() {
         LOG.info("CLEAR");
-       /* try {
-            sqlHelper.getPs(sqlHelper.getConnection(), clear).execute();
+        try(PreparedStatement ps = sqlHelper.getPs(sqlHelper.getConnection(), clear)) {
+        ps.execute();
         } catch (SQLException e) {
-        }*/
-
-        try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(clear)) {
-            ps.execute();
-        } catch (SQLException e) {
-            throw new StorageException(e);
+            e.printStackTrace();
         }
     }
 
     @Override
     public Resume get(String uuid) {
         LOG.info("GET");
-        try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(get)) {
+        try (PreparedStatement ps = sqlHelper.getPs(sqlHelper.getConnection(), get)) {
             ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
@@ -72,8 +66,7 @@ public class SqlStorage implements Storage {
     @Override
     public void save(Resume r) {
         LOG.info("SAVE");
-        try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(save)) {
+        try (PreparedStatement ps = sqlHelper.getPs(sqlHelper.getConnection(), save)) {
             ps.setString(1, r.getUuid());
             ps.setString(2, r.getFullName());
             ps.executeUpdate();
@@ -88,12 +81,9 @@ public class SqlStorage implements Storage {
     @Override
     public void update(Resume r) {
         LOG.info("UPDATE");
-        try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(update)) {
+        try (PreparedStatement ps = sqlHelper.getPs(sqlHelper.getConnection(), update)) {
             ps.setString(1, r.getFullName());
-            if (ps.executeUpdate() == 0) {
-                throw new NotExistStorageException(r.getUuid());
-            }
+           isNotExist(ps,r.getUuid());
         } catch (SQLException e) {
             throw new StorageException(e);
         }
@@ -102,12 +92,9 @@ public class SqlStorage implements Storage {
     @Override
     public void delete(String uuid) {
         LOG.info("DELETE");
-        try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(delete)) {
+        try (PreparedStatement ps = sqlHelper.getPs(sqlHelper.getConnection(), delete)) {
             ps.setString(1, uuid);
-            if (ps.executeUpdate() == 0) {
-                throw new NotExistStorageException(uuid);
-            }
+            isNotExist(ps,uuid);
         } catch (SQLException e) {
             throw new StorageException(e);
         }
@@ -136,8 +123,7 @@ public class SqlStorage implements Storage {
     public int size() {
         LOG.info("SIZE");
         int count = 0;
-        try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(counts)) {
+        try (PreparedStatement ps = sqlHelper.getPs(sqlHelper.getConnection(), counts)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 count = rs.getInt(1);
@@ -146,5 +132,11 @@ public class SqlStorage implements Storage {
             throw new StorageException(e);
         }
         return count;
+    }
+
+    public void isNotExist(PreparedStatement ps, String uuid) throws SQLException{
+        if (ps.executeUpdate() == 0) {
+            throw new NotExistStorageException(uuid);
+        }
     }
 }
