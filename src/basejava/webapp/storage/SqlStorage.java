@@ -35,11 +35,13 @@ public class SqlStorage implements Storage {
     @Override
     public void clear() {
         LOG.info("CLEAR");
-        try(PreparedStatement ps = sqlHelper.getPs(sqlHelper.getConnection(), clear)) {
-        ps.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        sqlHelper.sqlException(clear, new SqlHelper.BlockCode() {
+               @Override
+               public PreparedStatement execute(PreparedStatement ps) throws SQLException {
+                   ps.execute();
+                   return null;
+               }
+           });
     }
 
     @Override
