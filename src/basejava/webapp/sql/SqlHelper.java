@@ -25,13 +25,8 @@ public class SqlHelper {
          ps = getConnection().prepareStatement(sql);
         return ps;
     }
-    public void sqlException (Connection conn, String sql ){
-      try(PreparedStatement preparedStatement=  getPs(getConnection(),
-              sql)){
+    public void sqlException (SQLException exception){
 
-      }catch (SQLException e){
-          throw new StorageException(e);
-      }
     }
 
 

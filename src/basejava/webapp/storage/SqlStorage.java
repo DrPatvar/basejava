@@ -4,10 +4,11 @@ import basejava.webapp.exception.ExistStorageException;
 import basejava.webapp.exception.NotExistStorageException;
 import basejava.webapp.exception.StorageException;
 import basejava.webapp.model.Resume;
-import basejava.webapp.sql.ConnectionFactory;
 import basejava.webapp.sql.SqlHelper;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -15,7 +16,6 @@ import java.util.logging.Logger;
 
 public class SqlStorage implements Storage {
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
-    private final ConnectionFactory connectionFactory;
     private final SqlHelper sqlHelper;
 
 
@@ -29,12 +29,6 @@ public class SqlStorage implements Storage {
 
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
-        connectionFactory = new ConnectionFactory() {
-            @Override
-            public Connection getConnection() throws SQLException {
-                return DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-            }
-        };
         sqlHelper = new SqlHelper(dbUrl,dbUser,dbPassword);
     }
 
@@ -104,10 +98,9 @@ public class SqlStorage implements Storage {
     public List<Resume> getAllSorted() {
         LOG.info("GETALLSORTED");
         List<Resume> list = new ArrayList<>();
-        try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement(getAll)) {
+        try (PreparedStatement ps = sqlHelper.getPs(sqlHelper.getConnection(), getAll)) {
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 String uuid = rs.getString("uuid").trim();
                 String fullName = rs.getString("full_name");
                 list.add(new Resume(uuid, fullName));
