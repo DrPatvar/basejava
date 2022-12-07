@@ -2,10 +2,8 @@ package basejava.webapp.storage;
 
 import basejava.webapp.exception.NotExistStorageException;
 import basejava.webapp.model.Resume;
-import basejava.webapp.sql.ConnectionFactory;
 import basejava.webapp.sql.SqlHelper;
 
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,26 +14,16 @@ import java.util.logging.Logger;
 
 public class SqlStorage implements Storage {
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
-    private final ConnectionFactory connectionFactory;
-    private final SqlHelper sqlHelper = new SqlHelper();
-
-    private String clear = "DELETE  FROM resume";
-    private String get = "SELECT * FROM resume r WHERE r.uuid = ?";
-    private String save = "INSERT INTO resume (uuid, full_name) VALUES (?,?)";
-    private String update = "UPDATE  resume  SET  full_name = ?";
-    private String delete = "DELETE FROM resume WHERE uuid = ?";
-    private String getAll = "SELECT * FROM resume ";
-    private String counts = "SELECT count(*) FROM resume";
-
+    private final SqlHelper sqlHelper;
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
-        connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+        sqlHelper = new SqlHelper(dbUrl, dbUser, dbPassword);
     }
 
     @Override
     public void clear() {
         LOG.info("CLEAR");
-        sqlHelper.sqlExecute(connectionFactory, clear, ps -> {
+        sqlHelper.execute("DELETE  FROM resume", ps -> {
             ps.execute();
             return null;
         });
@@ -44,7 +32,7 @@ public class SqlStorage implements Storage {
     @Override
     public Resume get(String uuid) {
         LOG.info("GET");
-        return sqlHelper.sqlExecute(connectionFactory, get, ps -> {
+        return sqlHelper.execute("SELECT * FROM resume r WHERE r.uuid = ?", ps -> {
             ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
@@ -57,10 +45,10 @@ public class SqlStorage implements Storage {
     @Override
     public void save(Resume r) {
         LOG.info("SAVE");
-        sqlHelper.sqlExecute(connectionFactory, save, ps -> {
+        sqlHelper.execute("INSERT INTO resume (uuid, full_name) VALUES (?,?)", ps -> {
             ps.setString(1, r.getUuid());
             ps.setString(2, r.getFullName());
-            ps.executeUpdate();
+            ps.execute();
             return null;
         });
     }
@@ -68,7 +56,7 @@ public class SqlStorage implements Storage {
     @Override
     public void update(Resume r) {
         LOG.info("UPDATE");
-        sqlHelper.sqlExecute(connectionFactory, update, ps -> {
+        sqlHelper.execute("UPDATE  resume  SET  full_name = ?", ps -> {
             ps.setString(1, r.getFullName());
             isNotExist(ps, r.getUuid());
             return null;
@@ -78,7 +66,7 @@ public class SqlStorage implements Storage {
     @Override
     public void delete(String uuid) {
         LOG.info("DELETE");
-        sqlHelper.sqlExecute(connectionFactory, delete, ps -> {
+        sqlHelper.execute("DELETE FROM resume WHERE uuid = ?", ps -> {
             ps.setString(1, uuid);
             isNotExist(ps, uuid);
             return null;
@@ -89,7 +77,7 @@ public class SqlStorage implements Storage {
     public List<Resume> getAllSorted() {
         LOG.info("GETALLSORTED");
         List<Resume> list = new ArrayList<>();
-        return sqlHelper.sqlExecute(connectionFactory, getAll, ps -> {
+        return sqlHelper.execute("SELECT * FROM resume ", ps -> {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String uuid = rs.getString("uuid").trim();
@@ -104,13 +92,10 @@ public class SqlStorage implements Storage {
     @Override
     public int size() {
         LOG.info("SIZE");
-        final int[] count = {0};
-        return sqlHelper.sqlExecute(connectionFactory, counts, ps -> {
+        int count = 0;
+        return sqlHelper.execute("SELECT count(*) FROM resume", ps -> {
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                count[0] = rs.getInt(1);
-            }
-            return count[0];
+            return rs.next() ? rs.getInt(1) : 0;
         });
     }
 
