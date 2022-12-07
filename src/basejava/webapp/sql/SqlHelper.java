@@ -21,9 +21,10 @@ public class SqlHelper {
             T resault = (T) blockCode.execute(ps);
             return resault;
         } catch (SQLException e) {
-            if (e.getErrorCode() == 0) {
+            System.out.println("__________" + e.getErrorCode());
+            /*if (e.getErrorCode() == 0) {
                 throw new ExistStorageException();
-            }
+            }*/
             throw new StorageException(e);
         }
     }
