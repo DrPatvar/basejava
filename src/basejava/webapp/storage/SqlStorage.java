@@ -2,8 +2,10 @@ package basejava.webapp.storage;
 
 import basejava.webapp.exception.NotExistStorageException;
 import basejava.webapp.model.Resume;
+import basejava.webapp.sql.ConnectionFactory;
 import basejava.webapp.sql.SqlHelper;
 
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,26 +16,26 @@ import java.util.logging.Logger;
 
 public class SqlStorage implements Storage {
     private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
-    private final SqlHelper sqlHelper;
+    private final ConnectionFactory connectionFactory;
+    private final SqlHelper sqlHelper = new SqlHelper();
 
-
-    private  String clear = "DELETE  FROM resume";
+    private String clear = "DELETE  FROM resume";
     private String get = "SELECT * FROM resume r WHERE r.uuid = ?";
-    private  String save = "INSERT INTO resume (uuid, full_name) VALUES (?,?)";
-    private String  update = "UPDATE  resume  SET  full_name = ?";
+    private String save = "INSERT INTO resume (uuid, full_name) VALUES (?,?)";
+    private String update = "UPDATE  resume  SET  full_name = ?";
     private String delete = "DELETE FROM resume WHERE uuid = ?";
     private String getAll = "SELECT * FROM resume ";
     private String counts = "SELECT count(*) FROM resume";
 
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
-        sqlHelper = new SqlHelper(dbUrl,dbUser,dbPassword);
+        connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
     }
 
     @Override
     public void clear() {
         LOG.info("CLEAR");
-        sqlHelper.sqlException(clear, ps -> {
+        sqlHelper.sqlExecute(connectionFactory, clear, ps -> {
             ps.execute();
             return null;
         });
@@ -42,7 +44,7 @@ public class SqlStorage implements Storage {
     @Override
     public Resume get(String uuid) {
         LOG.info("GET");
-       return sqlHelper.sqlException(get, ps -> {
+        return sqlHelper.sqlExecute(connectionFactory, get, ps -> {
             ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
@@ -55,7 +57,7 @@ public class SqlStorage implements Storage {
     @Override
     public void save(Resume r) {
         LOG.info("SAVE");
-        sqlHelper.sqlException(save, ps -> {
+        sqlHelper.sqlExecute(connectionFactory, save, ps -> {
             ps.setString(1, r.getUuid());
             ps.setString(2, r.getFullName());
             ps.executeUpdate();
@@ -66,7 +68,7 @@ public class SqlStorage implements Storage {
     @Override
     public void update(Resume r) {
         LOG.info("UPDATE");
-        sqlHelper.sqlException(update, ps -> {
+        sqlHelper.sqlExecute(connectionFactory, update, ps -> {
             ps.setString(1, r.getFullName());
             isNotExist(ps, r.getUuid());
             return null;
@@ -76,7 +78,7 @@ public class SqlStorage implements Storage {
     @Override
     public void delete(String uuid) {
         LOG.info("DELETE");
-        sqlHelper.sqlException(delete, ps -> {
+        sqlHelper.sqlExecute(connectionFactory, delete, ps -> {
             ps.setString(1, uuid);
             isNotExist(ps, uuid);
             return null;
@@ -87,7 +89,7 @@ public class SqlStorage implements Storage {
     public List<Resume> getAllSorted() {
         LOG.info("GETALLSORTED");
         List<Resume> list = new ArrayList<>();
-       return sqlHelper.sqlException(getAll, ps -> {
+        return sqlHelper.sqlExecute(connectionFactory, getAll, ps -> {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String uuid = rs.getString("uuid").trim();
@@ -103,14 +105,13 @@ public class SqlStorage implements Storage {
     public int size() {
         LOG.info("SIZE");
         final int[] count = {0};
-       return sqlHelper.sqlException(counts, ps -> {
+        return sqlHelper.sqlExecute(connectionFactory, counts, ps -> {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 count[0] = rs.getInt(1);
             }
             return count[0];
         });
-
     }
 
     public void isNotExist(PreparedStatement ps, String uuid) throws SQLException{
