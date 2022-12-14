@@ -3,6 +3,7 @@ package basejava.webapp.storage;
 import basejava.webapp.Config;
 import basejava.webapp.exception.ExistStorageException;
 import basejava.webapp.exception.NotExistStorageException;
+import basejava.webapp.model.ContactType;
 import basejava.webapp.model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,16 +13,17 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class AbstractStorageTest {
 
     protected Storage storage;
     protected final static File STORAGE_DIR = Config.get().getStorageDir();
 
-    private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
-    private static final String UUID_4 = "uuid4";
+    private static final String UUID_1 = UUID.randomUUID().toString();
+    private static final String UUID_2 = UUID.randomUUID().toString();
+    private static final String UUID_3 = UUID.randomUUID().toString();
+    private static final String UUID_4 = UUID.randomUUID().toString();
     private static final String FULLNAME1 = "Resume1";
     private static final String FULLNAME2 = "Resume2";
     private static final String FULLNAME3 = "Resume3";
@@ -39,10 +41,10 @@ public class AbstractStorageTest {
         RESUME_3 = new Resume(UUID_3, FULLNAME3);
         RESUME_4 = new Resume(UUID_4, FULLNAME4);
 
-        /*RESUME_1.addContact(ContactType.PHONE, "323232");
+        /*RESUME_1.addContact(ContactType.PHONE, "777777");
         RESUME_1.addContact(ContactType.MAIL, "mail@mail.ru");
-        RESUME_1.addContact(ContactType.GITHUB, "GitHub.com/People");
-        RESUME_1.addSection(SectionType.PERSONAL, new TextSection("Личные качества"));
+        RESUME_1.addContact(ContactType.GITHUB, "GitHub.com/People");*/
+        /*RESUME_1.addSection(SectionType.PERSONAL, new TextSection("Личные качества"));
         RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("Позиция"));
         RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListSection("Достижения", "Достижения_2", "Достижения_3"));
         RESUME_1.addSection(SectionType.QUALIFICATIONS, new ListSection("Квалификация", "Квалификация_2", "Квалификация_3"));
@@ -64,9 +66,11 @@ public class AbstractStorageTest {
                 new Organization("University", "www.Unity.ru",
                         new Period(1987, Month.SEPTEMBER,1993,Month.JULY, "St.Petersnurg","ingeneer"),
                         new Period(1993, Month.SEPTEMBER,1996, Month.JULY, "St. Petersburg","Aspirant"))));
+        */
         RESUME_2.addContact(ContactType.PHONE, "555555");
         RESUME_2.addContact(ContactType.MAIL, "babl@mail.ru");
-        RESUME_2.addSection(SectionType.PERSONAL, new TextSection("Личные качества"));
+      //  RESUME_3.addContact(ContactType.PHONE, "454545");
+       /* RESUME_2.addSection(SectionType.PERSONAL, new TextSection("Личные качества"));
         RESUME_2.addSection(SectionType.OBJECTIVE, new TextSection("Позиция"));
         RESUME_2.addSection(SectionType.ACHIEVEMENT, new ListSection("Достижения", "Достижения_2", "Достижения_3"));
     */}
@@ -81,7 +85,6 @@ public class AbstractStorageTest {
         storage.save(RESUME_1);
         storage.save(RESUME_2);
         storage.save(RESUME_3);
-        //storage.save(RESUME_1);
     }
 
     public void assertSize(int expectedSize) {
