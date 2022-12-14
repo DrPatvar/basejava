@@ -81,16 +81,17 @@ public class SqlStorage implements Storage {
     public void update(Resume r) {
         LOG.info("UPDATE");
         sqlHelper.transactionExecute(connection -> {
-           try(PreparedStatement ps = connection.prepareStatement("UPDATE  resume r  SET  full_name = ? WHERE r.uuid = ? ")){
-               ps.setString(1, r.getFullName());
-               ps.setString(2, r.getUuid());
-               isNotExist(ps, r.getUuid());
-               return null;
-           }
-          /*  try (PreparedStatement ps = connection.prepareStatement("UPDATE contact r SET type = ?, value = ? WHERE resume_uuid=?")) {
-               // iterateContact(r, ps);
-            }*/
+            try (PreparedStatement ps = connection.prepareStatement("UPDATE  resume r  SET  full_name = ? WHERE r.uuid = ? ")) {
+                ps.setString(1, r.getFullName());
+                ps.setString(2, r.getUuid());
+                isNotExist(ps, r.getUuid());
+            }
+            try (PreparedStatement ps = connection.prepareStatement("UPDATE contact c SET type=?, value =? WHERE c.resume_uuid=?")) {
+                iterateContact(r, ps);
+            }
+            return null;
         });
+
     }
 
     @Override
@@ -113,7 +114,6 @@ public class SqlStorage implements Storage {
                while (rs.next()){
                    list.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
                }
-
            }
            return list;
        } );
@@ -131,7 +131,6 @@ public class SqlStorage implements Storage {
                         }
                     }
                 }
-
             }
             return list;
         } );
