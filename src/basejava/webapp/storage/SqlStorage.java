@@ -127,26 +127,23 @@ public class SqlStorage implements Storage {
                    list.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
                }
            }
+           try(PreparedStatement ps = connection.prepareStatement("SELECT * FROM contact")) {
+               ResultSet rs = ps.executeQuery();
+               while (rs.next()){
+                   String uuid = rs.getString("resume_uuid");
+                   String value = rs.getString("value");
+                   ContactType type = ContactType.valueOf(rs.getString("type"));
+                   for (Resume r:list
+                   ) {
+                       if (r.getUuid().equals(uuid)){
+                           r.addContact(type, value);
+                       }
+                   }
+               }
+           }
+           list.sort(Comparator.comparing(Resume::getUuid).thenComparing(Resume::getFullName));
            return list;
        } );
-        sqlHelper.transactionExecute(connection -> {
-            try(PreparedStatement ps = connection.prepareStatement("SELECT * FROM contact")) {
-                ResultSet rs = ps.executeQuery();
-                while (rs.next()){
-                    String uuid = rs.getString("resume_uuid");
-                    String value = rs.getString("value");
-                    ContactType type = ContactType.valueOf(rs.getString("type"));
-                    for (Resume r:list
-                         ) {
-                        if (r.getUuid().equals(uuid)){
-                            r.addContact(type, value);
-                        }
-                    }
-                }
-            }
-            list.sort(Comparator.comparing(Resume::getUuid).thenComparing(Resume::getFullName));
-            return list;
-        } );
         return list;
     }
 
