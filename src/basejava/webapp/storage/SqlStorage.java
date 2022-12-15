@@ -23,10 +23,6 @@ public class SqlStorage implements Storage {
         sqlHelper = new SqlHelper(dbUrl, dbUser, dbPassword);
     }
 
-    private void setContact(String value, ContactType type, Resume r) {
-        r.addContact(type, value);
-    }
-
     private void addContact(Connection conn, Resume resume) throws SQLException {
         PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)");
         for (Map.Entry<ContactType, String> e : resume.getContacts().entrySet()) {
@@ -45,6 +41,14 @@ public class SqlStorage implements Storage {
         PreparedStatement ps = connection.prepareStatement("DELETE  FROM contact WHERE resume_uuid = ?");
         ps.setString(1, resume.getUuid());
         ps.executeUpdate();
+    }
+
+    private void setContact(ResultSet rs, Resume resume) throws SQLException {
+        String value = rs.getString("value");
+        if (value != null) {
+            ContactType type = ContactType.valueOf(rs.getString("type"));
+            resume.addContact(type, value);
+        }
     }
 
     @Override
@@ -67,11 +71,7 @@ public class SqlStorage implements Storage {
             }
             Resume resume = new Resume(uuid, rs.getString("full_name"));
             do {
-                String value = rs.getString("value");
-                if (value!=null){
-                    ContactType type = ContactType.valueOf(rs.getString("type"));
-                    setContact(value, type, resume);
-                }
+                setContact(rs, resume);
             } while (rs.next());
             return resume;
         });
@@ -133,14 +133,12 @@ public class SqlStorage implements Storage {
            }
            try(PreparedStatement ps = connection.prepareStatement("SELECT * FROM contact")) {
                ResultSet rs = ps.executeQuery();
-               while (rs.next()){
+               while (rs.next()) {
                    String uuid = rs.getString("resume_uuid");
-                   String value = rs.getString("value");
-                   ContactType type = ContactType.valueOf(rs.getString("type"));
-                   for (Resume r:list
+                   for (Resume resume : list
                    ) {
-                       if (r.getUuid().equals(uuid)){
-                           setContact(value, type, r);
+                       if (resume.getUuid().equals(uuid)) {
+                           setContact(rs, resume);
                        }
                    }
                }
