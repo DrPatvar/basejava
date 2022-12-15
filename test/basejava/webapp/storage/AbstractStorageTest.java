@@ -10,15 +10,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class AbstractStorageTest {
 
     protected Storage storage;
     protected final static File STORAGE_DIR = Config.get().getStorageDir();
+    private static final Comparator COMPARATOR = Comparator.comparing(Resume::getUuid).thenComparing(Resume::getFullName);
+
 
     private static final String UUID_1 = UUID.randomUUID().toString();
     private static final String UUID_2 = UUID.randomUUID().toString();
@@ -41,9 +40,9 @@ public class AbstractStorageTest {
         RESUME_3 = new Resume(UUID_3, FULLNAME3);
         RESUME_4 = new Resume(UUID_4, FULLNAME4);
 
-        /*RESUME_1.addContact(ContactType.PHONE, "777777");
+        RESUME_1.addContact(ContactType.PHONE, "777777");
         RESUME_1.addContact(ContactType.MAIL, "mail@mail.ru");
-        RESUME_1.addContact(ContactType.GITHUB, "GitHub.com/People");*/
+        RESUME_1.addContact(ContactType.GITHUB, "GitHub.com/People");
         /*RESUME_1.addSection(SectionType.PERSONAL, new TextSection("Личные качества"));
         RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("Позиция"));
         RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListSection("Достижения", "Достижения_2", "Достижения_3"));
@@ -69,7 +68,7 @@ public class AbstractStorageTest {
         */
         RESUME_2.addContact(ContactType.PHONE, "555555");
         RESUME_2.addContact(ContactType.MAIL, "babl@mail.ru");
-      //  RESUME_3.addContact(ContactType.PHONE, "454545");
+      RESUME_3.addContact(ContactType.PHONE, "454545");
        /* RESUME_2.addSection(SectionType.PERSONAL, new TextSection("Личные качества"));
         RESUME_2.addSection(SectionType.OBJECTIVE, new TextSection("Позиция"));
         RESUME_2.addSection(SectionType.ACHIEVEMENT, new ListSection("Достижения", "Достижения_2", "Достижения_3"));
@@ -118,12 +117,16 @@ public class AbstractStorageTest {
         List<Resume> result = storage.getAllSorted();
         List<Resume> expected = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
         Assert.assertEquals(3,result.size());
+        expected.sort(COMPARATOR);
         Assert.assertEquals(expected, result );
     }
 
     @Test
     public void update() {
         Resume resume = new Resume(UUID_1, "New Name");
+        resume.addContact(ContactType.PHONE, "999999");
+        resume.addContact(ContactType.MAIL, "tihon@mail.ru");
+        resume.addContact(ContactType.GITHUB, "GitHub.com/World");
         storage.update(resume);
         Assert.assertTrue(resume.equals(storage.get(UUID_1)));
     }
@@ -150,7 +153,7 @@ public class AbstractStorageTest {
     public void delete() {
         storage.delete(UUID_1);
         assertSize(2);
-        assertGet(RESUME_1);
+        storage.get(UUID_1);
     }
     @Test(expected = NotExistStorageException.class)
     public void deleteNotExist() throws Exception{

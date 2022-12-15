@@ -50,11 +50,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     @Override
     public List<Resume> doCopyAll() {
-        List<Resume> list = new ArrayList<>();
-        for (int i = 0; i <size ; i++) {
-            list.add(storage[i]);
-        }
-        return list;
+        return Arrays.asList(Arrays.copyOfRange(storage,0,size));
     }
 
     protected abstract void insertResume(int index, Resume resume);
