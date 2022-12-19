@@ -3,8 +3,7 @@ package basejava.webapp.storage;
 import basejava.webapp.Config;
 import basejava.webapp.exception.ExistStorageException;
 import basejava.webapp.exception.NotExistStorageException;
-import basejava.webapp.model.ContactType;
-import basejava.webapp.model.Resume;
+import basejava.webapp.model.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,11 +42,12 @@ public class AbstractStorageTest {
         RESUME_1.addContact(ContactType.PHONE, "777777");
         RESUME_1.addContact(ContactType.MAIL, "mail@mail.ru");
         RESUME_1.addContact(ContactType.GITHUB, "GitHub.com/People");
-        /*RESUME_1.addSection(SectionType.PERSONAL, new TextSection("Личные качества"));
+        RESUME_4.addContact(ContactType.SKYPE, "Skype");
+        RESUME_1.addSection(SectionType.PERSONAL, new TextSection("Личные качества"));
         RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("Позиция"));
         RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListSection("Достижения", "Достижения_2", "Достижения_3"));
         RESUME_1.addSection(SectionType.QUALIFICATIONS, new ListSection("Квалификация", "Квалификация_2", "Квалификация_3"));
-        RESUME_1.addSection(SectionType.EXPERIENCE,
+        /*RESUME_1.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Organization("Organization11", "http://Organization11.ru",
                                 new Period(2005, Month.JANUARY, "position1", "content1"),
@@ -126,7 +126,8 @@ public class AbstractStorageTest {
         Resume resume = new Resume(UUID_1, "New Name");
         resume.addContact(ContactType.PHONE, "999999");
         resume.addContact(ContactType.MAIL, "tihon@mail.ru");
-        resume.addContact(ContactType.GITHUB, "GitHub.com/World");
+        resume.addContact(ContactType.SKYPE, "Skype_log");
+        resume.addContact(ContactType.HOME_PHONE, "7927800000");
         storage.update(resume);
         Assert.assertTrue(resume.equals(storage.get(UUID_1)));
     }
