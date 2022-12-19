@@ -31,8 +31,7 @@ public class SqlStorage implements Storage {
     @Override
     public Resume get(String uuid) {
         LOG.info("GET");
-        final Resume[] resume = new Resume[1];
-            sqlHelper.transactionExecute(connection -> {
+          return   sqlHelper.transactionExecute(connection -> {
                 try(PreparedStatement ps = connection.prepareStatement
                         ("SELECT * FROM resume r LEFT JOIN contact c ON r.uuid = c.resume_uuid WHERE r.uuid = ?")) {
                     ps.setString(1, uuid);
@@ -40,19 +39,20 @@ public class SqlStorage implements Storage {
                     if (!rs.next()) {
                         throw new NotExistStorageException(uuid);
                     }
-                     resume[0] = new Resume(uuid, rs.getString("full_name"));
+                     Resume resume = new Resume(uuid, rs.getString("full_name"));
                     do {
-                        addContact(rs, resume[0]);
-                        addSection(rs, resume[0]);
+                        addContact(rs, resume);
                     } while (rs.next());
-                    return resume[0];
-                }
-                try (PreparedStatement ps2 = connection.prepareStatement
-                        ("SELECT * FROM resume r LEFT JOIN section s on r.uuid = s.resume_uuid WHERE r.uuid =?")){
-
+                    try(PreparedStatement ps2 = connection.prepareStatement("SELECT * FROM section WHERE resume_uuid = ?")){
+                     ps2.setString(1, uuid);
+                     ResultSet rs2 = ps2.executeQuery();
+                     while (rs2.next()){
+                         addSection(rs2,resume);
+                     }
+                    }
+                    return resume;
                 }
             });
-            return resume[0];
     }
 
     @Override

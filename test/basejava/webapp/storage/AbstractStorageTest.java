@@ -69,10 +69,10 @@ public class AbstractStorageTest {
         RESUME_2.addContact(ContactType.PHONE, "555555");
         RESUME_2.addContact(ContactType.MAIL, "babl@mail.ru");
       RESUME_3.addContact(ContactType.PHONE, "454545");
-       /* RESUME_2.addSection(SectionType.PERSONAL, new TextSection("Личные качества"));
+        RESUME_2.addSection(SectionType.PERSONAL, new TextSection("Личные качества"));
         RESUME_2.addSection(SectionType.OBJECTIVE, new TextSection("Позиция"));
         RESUME_2.addSection(SectionType.ACHIEVEMENT, new ListSection("Достижения", "Достижения_2", "Достижения_3"));
-    */}
+    }
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
