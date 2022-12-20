@@ -11,15 +11,20 @@
     <title>Resume</title>
 </head>
 <body>
-<table>
+<H3>Таблица резюме </H3>
+<table width="59%" border="1">
+    <thead>
     <tr>
         <td>uuid</td>
         <td>full_name</td>
     </tr>
+    </thead>
+    <tbody>
     <tr>
-        <td>${name}</td>
-        <td>${name}</td>
+        <td>${uuid}</td>
+        <td>${fullName}</td>
     </tr>
+    </tbody>
 </table>
 
 </body>

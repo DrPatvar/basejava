@@ -43,5 +43,9 @@ public class Config {
     public Storage getStorage() {
         return storage;
     }
+
+    public Properties getProps() {
+        return props;
+    }
 }
 
